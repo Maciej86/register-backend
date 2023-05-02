@@ -1,0 +1,19 @@
+{
+  "name": "ruf-app",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "db.js",
+  "scripts": {
+    "dev": "npx nodemon ./app.js localhost 8080"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.2.4"
+  }
+}

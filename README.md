@@ -1,6 +1,6 @@
 # REGISTER
 
-Backend na potrzeby aplikacji [Register](https://github.com/Maciej86/register-backend)
+Backend na potrzeby aplikacji [Register](https://github.com/Maciej86/register-frontend)
 
 ## Wykorzystane technologie
 

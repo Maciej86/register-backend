@@ -1,11 +1,11 @@
 {
-  "name": "ruf-app",
+  "name": "register-backend",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "db.js",
   "scripts": {
-    "dev": "npx nodemon ./app.js localhost 8080"
+    "server": "npx nodemon ./app.js localhost 8080"
   },
   "keywords": [],
   "author": "",

@@ -1,24 +1,47 @@
 import express from "express";
 import cros from "cors";
-import { getTests, getTest } from "./db.js";
+import { addTokenUser, loginUser, loginUserToken, user } from "./db.js";
 
 const exp = express();
-const crosSet = cros();
-exp.use(crosSet);
+exp.use(cros());
+exp.use(express.json());
 
-exp.get("/react", async (req, res) => {
-  const reacts = await getTests();
-  res.send(reacts);
+// exp.get("/react/:id", async (req, res) => {
+//   const id = req.params.id;
+//   const react = await getTest(id);
+//   res.send(react);
+// });
+
+// User login using the form
+exp.post("/login", async (req, res) => {
+  const { name, password } = req.body;
+  const userLogin = await loginUser(name, password);
+
+  if (userLogin.length === 0) {
+    res.send([]);
+    return;
+  }
+
+  const userId = userLogin[0].id;
+  await addTokenUser(userId);
+  const userToken = await user(userId);
+  res.send(userToken);
 });
 
-exp.get("/react/:id", async (req, res) => {
-  const id = req.params.id;
-  const react = await getTest(id);
-  res.send([react]);
+// User login using a token
+exp.post("/login-token", async (req, res) => {
+  const { token } = req.body;
+  const userLoginToken = await loginUserToken(token);
+
+  if (userLoginToken.length === 0) {
+    res.send([]);
+    return;
+  }
+
+  res.send(userLoginToken);
 });
 
 exp.use((err, req, res, next) => {
-  console.error(err.stack);
   res.status(500).send("Coś nie tak z serwerem");
 });
 

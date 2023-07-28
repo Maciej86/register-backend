@@ -24,33 +24,27 @@ const generateToken = () => {
 };
 
 export const user = async (id) => {
-  const [user] = await pool.query(`SELECT * FROM react_test WHERE id = ?`, [
-    id,
-  ]);
+  const [user] = await pool.query(`SELECT * FROM user WHERE id = ?`, [id]);
   return user;
 };
 
 export const loginUser = async (name, password) => {
   const [user] = await pool.query(
-    `SELECT * FROM react_test WHERE name = ? AND password = ?`,
+    `SELECT * FROM user WHERE name = ? AND password = ?`,
     [name, password]
   );
   return user;
 };
 
 export const loginUserToken = async (token) => {
-  const [user] = await pool.query(
-    `SELECT * FROM react_test WHERE token_login = ?`,
-    [token]
-  );
+  const [user] = await pool.query(`SELECT * FROM user WHERE token_login = ?`, [
+    token,
+  ]);
   return user;
 };
 
 export const addTokenUser = async (id) => {
   const token = generateToken();
-  await pool.query(`UPDATE react_test SET token_login = ? WHERE id = ?`, [
-    token,
-    id,
-  ]);
+  await pool.query(`UPDATE user SET token_login = ? WHERE id = ?`, [token, id]);
   return;
 };

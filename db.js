@@ -24,20 +24,23 @@ const generateToken = () => {
 };
 
 export const user = async (id) => {
-  const [user] = await pool.query(`SELECT * FROM user WHERE id = ?`, [id]);
+  const [user] = await pool.query(
+    `SELECT name, email, theme, token_login FROM user WHERE id = ?`,
+    [id]
+  );
   return user;
 };
 
 export const loginUser = async (name, password) => {
   const [user] = await pool.query(
-    `SELECT * FROM user WHERE name = ? AND password = ?`,
+    `SELECT * FROM user WHERE email = ? AND password = ?`,
     [name, password]
   );
   return user;
 };
 
 export const loginUserToken = async (token) => {
-  const [user] = await pool.query(`SELECT * FROM user WHERE token_login = ?`, [
+  const [user] = await pool.query(`SELECT name, email, theme, token_login FROM user WHERE token_login = ?`, [
     token,
   ]);
   return user;

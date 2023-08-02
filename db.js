@@ -31,10 +31,10 @@ export const user = async (id) => {
   return user;
 };
 
-export const loginUser = async (name, password) => {
+export const loginUser = async (email, password) => {
   const [user] = await pool.query(
     `SELECT * FROM user WHERE email = ? AND password = ?`,
-    [name, password]
+    [email, password]
   );
   return user;
 };

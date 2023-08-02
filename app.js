@@ -14,8 +14,8 @@ exp.use(express.json());
 
 // User login using the form
 exp.post("/login", async (req, res) => {
-  const { name, password } = req.body;
-  const userLogin = await loginUser(name, password);
+  const { email, password } = req.body;
+  const userLogin = await loginUser(email, password);
 
   if (userLogin.length === 0) {
     res.send([]);

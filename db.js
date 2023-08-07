@@ -25,7 +25,7 @@ const generateToken = () => {
 
 export const user = async (id) => {
   const [user] = await pool.query(
-    `SELECT name, last_name, email, token_login, role, theme FROM user WHERE id = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE id = ?`,
     [id]
   );
   return user;
@@ -41,7 +41,7 @@ export const loginUser = async (email, password) => {
 
 export const loginUserToken = async (token) => {
   const [user] = await pool.query(
-    `SELECT name, last_name, email, token_login, role, theme FROM user WHERE token_login = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE token_login = ?`,
     [token]
   );
   return user;

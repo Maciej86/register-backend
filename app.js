@@ -41,6 +41,14 @@ exp.post("/login-token", async (req, res) => {
   res.send(userLoginToken);
 });
 
+exp.post("/loginout", async (req, res) => {
+  const { id } = req.body;
+  await addTokenUser(id);
+
+  const userToken = await user(id);
+  res.send(userToken);
+});
+
 exp.use((err, req, res, next) => {
   res.status(500).send("Coś nie tak z serwerem");
 });

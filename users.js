@@ -17,7 +17,7 @@ const generateToken = () => {
     ..."#!@1234567890aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrRsStTuUwWxXyYzZ",
   ];
   let token = "";
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 100; i++) {
     token = token + char[Math.floor(Math.random() * 27)];
   }
   return token;
@@ -29,6 +29,14 @@ export const user = async (id) => {
     [id]
   );
   return user;
+};
+
+export const passwordExists = async (id, passworduser) => {
+  const [password] = await pool.query(
+    `SELECT password FROM user WHERE id = ? AND password = ?`,
+    [id, passworduser]
+  );
+  return password;
 };
 
 export const loginUser = async (email, password) => {
@@ -50,5 +58,21 @@ export const loginUserToken = async (token) => {
 export const addTokenUser = async (id) => {
   const token = generateToken();
   await pool.query(`UPDATE user SET token_login = ? WHERE id = ?`, [token, id]);
+  return;
+};
+
+export const editAccount = async (id, name, lastname, email, theme) => {
+  await pool.query(
+    `UPDATE user SET name = ?, last_name = ?, email = ?, theme = ? WHERE id = ?`,
+    [name, lastname, email, theme, id]
+  );
+  return true;
+};
+
+export const editUserPassword = async (id, newpassword) => {
+  await pool.query(`UPDATE user SET password = ? WHERE id = ?`, [
+    newpassword,
+    id,
+  ]);
   return;
 };

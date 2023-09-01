@@ -74,12 +74,12 @@ exp.post("/editpassword", async (req, res) => {
   const oldPasswordExist = await passwordExists(id, oldpassword);
 
   if (oldPasswordExist.length === 0) {
-    res.send(false);
+    res.send("error");
     return;
   }
 
   await editUserPassword(id, newpassword);
-  res.send(true);
+  res.send("ok");
 });
 
 exp.use((err, req, res, next) => {

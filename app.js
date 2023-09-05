@@ -8,6 +8,7 @@ import {
   editAccount,
   passwordExists,
   editUserPassword,
+  emailExsist,
 } from "./users.js";
 
 const exp = express();
@@ -37,7 +38,7 @@ exp.post("/login", async (req, res) => {
 });
 
 // User login using a token
-exp.post("/login-token", async (req, res) => {
+exp.post("/logintoken", async (req, res) => {
   const { token } = req.body;
   const userLoginToken = await loginUserToken(token);
 
@@ -80,6 +81,18 @@ exp.post("/editpassword", async (req, res) => {
 
   await editUserPassword(id, newpassword);
   res.send("ok");
+});
+
+// Email exsist
+exp.post("/emailexsist", async (req, res) => {
+  const { email } = req.body;
+  const checkEmail = await emailExsist(email);
+
+  if (checkEmail.length === 0) {
+    res.send("notexsist");
+    return;
+  }
+  res.send("exsist");
 });
 
 exp.use((err, req, res, next) => {

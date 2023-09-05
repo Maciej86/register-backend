@@ -76,3 +76,12 @@ export const editUserPassword = async (id, newpassword) => {
   ]);
   return;
 };
+
+export const emailExsist = async (email) => {
+  const [emailExsist] = await pool.query(
+    `SELECT email FROM user WHERE email = ?`,
+    [email]
+  );
+
+  return emailExsist;
+};

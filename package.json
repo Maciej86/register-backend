@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "db.js",
+  "main": "app.js",
   "scripts": {
     "server": "npx nodemon ./app.js localhost 8080"
   },

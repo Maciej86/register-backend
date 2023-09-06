@@ -25,18 +25,10 @@ const generateToken = () => {
 
 export const user = async (id) => {
   const [user] = await pool.query(
-    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE id = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme, organization FROM user WHERE id = ?`,
     [id]
   );
   return user;
-};
-
-export const passwordExists = async (id, passworduser) => {
-  const [password] = await pool.query(
-    `SELECT password FROM user WHERE id = ? AND password = ?`,
-    [id, passworduser]
-  );
-  return password;
 };
 
 export const loginUser = async (email, password) => {
@@ -49,7 +41,7 @@ export const loginUser = async (email, password) => {
 
 export const loginUserToken = async (token) => {
   const [user] = await pool.query(
-    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE token_login = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme, organization FROM user WHERE token_login = ?`,
     [token]
   );
   return user;
@@ -69,14 +61,6 @@ export const editAccount = async (id, name, lastname, email, theme) => {
   return true;
 };
 
-export const editUserPassword = async (id, newpassword) => {
-  await pool.query(`UPDATE user SET password = ? WHERE id = ?`, [
-    newpassword,
-    id,
-  ]);
-  return;
-};
-
 export const emailExsist = async (email) => {
   const [emailExsist] = await pool.query(
     `SELECT email FROM user WHERE email = ?`,
@@ -84,4 +68,20 @@ export const emailExsist = async (email) => {
   );
 
   return emailExsist;
+};
+
+export const passwordExists = async (id, passworduser) => {
+  const [password] = await pool.query(
+    `SELECT password FROM user WHERE id = ? AND password = ?`,
+    [id, passworduser]
+  );
+  return password;
+};
+
+export const editUserPassword = async (id, newpassword) => {
+  await pool.query(`UPDATE user SET password = ? WHERE id = ?`, [
+    newpassword,
+    id,
+  ]);
+  return;
 };

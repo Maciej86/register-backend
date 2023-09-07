@@ -25,7 +25,7 @@ const generateToken = () => {
 
 export const user = async (id) => {
   const [user] = await pool.query(
-    `SELECT id, name, last_name, email, token_login, role, theme, organization FROM user WHERE id = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE id = ?`,
     [id]
   );
   return user;
@@ -41,7 +41,7 @@ export const loginUser = async (email, password) => {
 
 export const loginUserToken = async (token) => {
   const [user] = await pool.query(
-    `SELECT id, name, last_name, email, token_login, role, theme, organization FROM user WHERE token_login = ?`,
+    `SELECT id, name, last_name, email, token_login, role, theme FROM user WHERE token_login = ?`,
     [token]
   );
   return user;
@@ -51,6 +51,15 @@ export const addTokenUser = async (id) => {
   const token = generateToken();
   await pool.query(`UPDATE user SET token_login = ? WHERE id = ?`, [token, id]);
   return;
+};
+
+export const organization = async (id) => {
+  const [nameOrganization] = await pool.query(
+    `SELECT users_organization.id_organization, organization.name_organization FROM users_organization LEFT JOIN organization ON users_organization.id_organization = organization.id WHERE users_organization.id_user = ?`,
+    [id]
+  );
+
+  return nameOrganization;
 };
 
 export const editAccount = async (id, name, lastname, email, theme) => {

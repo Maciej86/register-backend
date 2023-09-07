@@ -44,20 +44,16 @@ exp.post("/login", async (req, res) => {
 // User login using a token
 exp.post("/logintoken", async (req, res) => {
   const { token } = req.body;
-  const userLoginToken = await loginUserToken(token);
+  let userLoginToken = await loginUserToken(token);
 
   if (userLoginToken.length === 0) {
     res.send([]);
     return;
   }
 
-  const userId = userLogin[0].id;
-  await addTokenUser(userId);
-  let userToken = await user(userId);
-
+  const userId = userLoginToken[0].id;
   const dataOrganization = await organization(userId);
-  userLoginToken = [...userToken, dataOrganization];
-
+  userLoginToken = [...userLoginToken, dataOrganization];
   res.send(userLoginToken);
 });
 

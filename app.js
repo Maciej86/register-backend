@@ -9,6 +9,7 @@ import {
   passwordExists,
   editUserPassword,
   emailExsist,
+  organization,
 } from "./users.js";
 
 const exp = express();
@@ -33,7 +34,10 @@ exp.post("/login", async (req, res) => {
 
   const userId = userLogin[0].id;
   await addTokenUser(userId);
-  const userToken = await user(userId);
+  let userToken = await user(userId);
+
+  const dataOrganization = await organization(userId);
+  userToken = [...userToken, dataOrganization];
   res.send(userToken);
 });
 
@@ -46,6 +50,13 @@ exp.post("/logintoken", async (req, res) => {
     res.send([]);
     return;
   }
+
+  const userId = userLogin[0].id;
+  await addTokenUser(userId);
+  let userToken = await user(userId);
+
+  const dataOrganization = await organization(userId);
+  userLoginToken = [...userToken, dataOrganization];
 
   res.send(userLoginToken);
 });

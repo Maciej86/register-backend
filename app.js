@@ -72,7 +72,9 @@ exp.post("/editaccount", async (req, res) => {
   const statusEdit = await editAccount(id, name, lastname, email, theme);
 
   if (statusEdit) {
-    const newDataUser = await user(id);
+    let newDataUser = await user(id);
+    const dataOrganization = await organization(id);
+    newDataUser = [...newDataUser, dataOrganization];
     res.send(newDataUser);
   }
 });

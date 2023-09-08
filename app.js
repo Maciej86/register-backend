@@ -68,8 +68,15 @@ exp.post("/loginout", async (req, res) => {
 
 // Edit account user
 exp.post("/editaccount", async (req, res) => {
-  const { id, name, lastname, email, theme } = req.body;
-  const statusEdit = await editAccount(id, name, lastname, email, theme);
+  const { id, name, lastname, email, theme, organizationid } = req.body;
+  const statusEdit = await editAccount(
+    id,
+    name,
+    lastname,
+    email,
+    theme,
+    organizationid
+  );
 
   if (statusEdit) {
     let newDataUser = await user(id);

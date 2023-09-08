@@ -62,11 +62,19 @@ export const organization = async (id) => {
   return nameOrganization;
 };
 
-export const editAccount = async (id, name, lastname, email, theme) => {
+export const editAccount = async (
+  id,
+  name,
+  lastname,
+  email,
+  theme,
+  organizationid
+) => {
   await pool.query(
-    `UPDATE user SET name = ?, last_name = ?, email = ?, theme = ? WHERE id = ?`,
-    [name, lastname, email, theme, id]
+    `UPDATE user SET name = ?, last_name = ?, email = ?, theme = ?, main_organization = ? WHERE id = ?`,
+    [name, lastname, email, theme, organizationid, id]
   );
+
   return true;
 };
 

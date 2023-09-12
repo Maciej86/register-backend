@@ -9,8 +9,8 @@ import {
   passwordExists,
   editUserPassword,
   emailExsist,
-  organization,
 } from "./users.js";
+import { organization } from "./organizatios.js";
 
 const exp = express();
 exp.use(cros());
@@ -109,6 +109,14 @@ exp.post("/emailexsist", async (req, res) => {
     return;
   }
   res.send("exsist");
+});
+
+// Fetch organization user
+exp.post("/organization", async (req, res) => {
+  const { id } = req.body;
+  const userOrganization = await organization(id);
+
+  res.send(userOrganization);
 });
 
 exp.use((err, req, res, next) => {

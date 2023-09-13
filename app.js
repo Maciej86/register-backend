@@ -13,7 +13,7 @@ import {
 import {
   addOrganization,
   addUserOrganization,
-  organization,
+  userOrganization,
 } from "./organizatios.js";
 
 const exp = express();
@@ -109,19 +109,19 @@ exp.post("/emailexsist", async (req, res) => {
 });
 
 // Fetch organization user
-exp.post("/organization", async (req, res) => {
+exp.post("/userorganization", async (req, res) => {
   const { id } = req.body;
-  const userOrganization = await organization(id);
+  const userRecord = await userOrganization(id);
 
-  res.send(userOrganization);
+  res.send(userRecord);
 });
 
 exp.post("/addorganization", async (req, res) => {
   const { idUser, name } = req.body;
   const idOrganization = await addOrganization(name);
   await addUserOrganization(idUser, idOrganization.insertId);
-  const userOrganization = await organization(idUser);
-  res.send(userOrganization);
+  const userRecord = await userOrganization(idUser);
+  res.send(userRecord);
 });
 
 exp.use((err, req, res, next) => {

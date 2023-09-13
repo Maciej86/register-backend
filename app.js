@@ -35,9 +35,6 @@ exp.post("/login", async (req, res) => {
   const userId = userLogin[0].id;
   await addTokenUser(userId);
   let userToken = await user(userId);
-
-  const dataOrganization = await organization(userId);
-  userToken = [...userToken, dataOrganization];
   res.send(userToken);
 });
 
@@ -52,8 +49,6 @@ exp.post("/logintoken", async (req, res) => {
   }
 
   const userId = userLoginToken[0].id;
-  const dataOrganization = await organization(userId);
-  userLoginToken = [...userLoginToken, dataOrganization];
   res.send(userLoginToken);
 });
 
@@ -80,8 +75,6 @@ exp.post("/editaccount", async (req, res) => {
 
   if (statusEdit) {
     let newDataUser = await user(id);
-    const dataOrganization = await organization(id);
-    newDataUser = [...newDataUser, dataOrganization];
     res.send(newDataUser);
   }
 });

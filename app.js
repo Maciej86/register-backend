@@ -45,14 +45,12 @@ exp.post("/login", async (req, res) => {
 // User login using a token
 exp.post("/logintoken", async (req, res) => {
   const { token } = req.body;
-  let userLoginToken = await loginUserToken(token);
+  const userLoginToken = await loginUserToken(token);
 
   if (userLoginToken.length === 0) {
     res.send([]);
     return;
   }
-
-  const userId = userLoginToken[0].id;
   res.send(userLoginToken);
 });
 

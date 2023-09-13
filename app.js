@@ -10,7 +10,11 @@ import {
   editUserPassword,
   emailExsist,
 } from "./users.js";
-import { organization } from "./organizatios.js";
+import {
+  addOrganization,
+  addUserOrganization,
+  organization,
+} from "./organizatios.js";
 
 const exp = express();
 exp.use(cros());
@@ -109,6 +113,14 @@ exp.post("/organization", async (req, res) => {
   const { id } = req.body;
   const userOrganization = await organization(id);
 
+  res.send(userOrganization);
+});
+
+exp.post("/addorganization", async (req, res) => {
+  const { idUser, name } = req.body;
+  const idOrganization = await addOrganization(name);
+  await addUserOrganization(idUser, idOrganization.insertId);
+  const userOrganization = await organization(idUser);
   res.send(userOrganization);
 });
 

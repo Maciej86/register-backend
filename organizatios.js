@@ -20,3 +20,20 @@ export const organization = async (id) => {
 
   return nameOrganization;
 };
+
+export const addOrganization = async (name) => {
+  const [newRow] = await pool.query(
+    `INSERT INTO organization (name_organization) VALUES (?)`,
+    [name]
+  );
+
+  return newRow;
+};
+
+export const addUserOrganization = async (idUser, idOrganization) => {
+  await pool.query(
+    `INSERT INTO users_organization (id_user, id_organization) VALUES (?,?)`,
+    [idUser, idOrganization]
+  );
+  return;
+};

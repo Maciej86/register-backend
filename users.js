@@ -53,15 +53,6 @@ export const addTokenUser = async (id) => {
   return;
 };
 
-// export const organization = async (id) => {
-//   const [nameOrganization] = await pool.query(
-//     `SELECT users_organization.id_organization, organization.name_organization FROM users_organization LEFT JOIN organization ON users_organization.id_organization = organization.id WHERE users_organization.id_user = ?`,
-//     [id]
-//   );
-
-//   return nameOrganization;
-// };
-
 export const editAccount = async (
   id,
   name,

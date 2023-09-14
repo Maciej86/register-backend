@@ -13,6 +13,7 @@ import {
 import {
   addOrganization,
   addUserOrganization,
+  organization,
   userOrganization,
 } from "./organizatios.js";
 
@@ -116,6 +117,13 @@ exp.post("/userorganization", async (req, res) => {
 
 exp.post("/addorganization", async (req, res) => {
   const { idUser, name } = req.body;
+  const nameOrganizationExsist = await organization(name);
+
+  if (nameOrganizationExsist.length === 0) {
+    res.send([]);
+    return;
+  }
+
   const idOrganization = await addOrganization(name);
   await addUserOrganization(idUser, idOrganization.insertId);
   const userRecord = await userOrganization(idUser);

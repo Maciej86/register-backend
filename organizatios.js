@@ -12,6 +12,15 @@ const pool = mysql
   })
   .promise();
 
+export const organization = async (id) => {
+  const [organization] = await pool.query(
+    `SELECT * FROM organization WHERE id = ?`,
+    [id]
+  );
+
+  return organization;
+};
+
 export const userOrganization = async (id) => {
   const [nameOrganization] = await pool.query(
     `SELECT users_organization.id_organization, organization.name_organization FROM users_organization LEFT JOIN organization ON users_organization.id_organization = organization.id WHERE users_organization.id_user = ?`,

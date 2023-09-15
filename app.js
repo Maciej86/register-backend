@@ -13,6 +13,7 @@ import {
 import {
   addOrganization,
   addUserOrganization,
+  allOrganizations,
   nameOrganization,
   userOrganization,
 } from "./organizatios.js";
@@ -115,6 +116,7 @@ exp.post("/userorganization", async (req, res) => {
   res.send(userRecord);
 });
 
+// Fetch add new organization
 exp.post("/addorganization", async (req, res) => {
   const { idUser, name } = req.body;
   const nameOrganizationExsist = await nameOrganization(name);
@@ -128,6 +130,12 @@ exp.post("/addorganization", async (req, res) => {
   await addUserOrganization(idUser, idOrganization.insertId);
   const userRecord = await userOrganization(idUser);
   res.send(userRecord);
+});
+
+// Fetch organization and count user
+exp.post("/allorganization", async (req, res) => {
+  const records = await allOrganizations();
+  res.send(records);
 });
 
 exp.use((err, req, res, next) => {

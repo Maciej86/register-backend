@@ -46,3 +46,11 @@ export const addUserOrganization = async (idUser, idOrganization) => {
   );
   return;
 };
+
+export const allOrganizations = async () => {
+  const [allRecords] = await pool.query(
+    `SELECT organization.id, organization.name_organization, COUNT(users_organization.id_user) AS count_user FROM organization LEFT JOIN users_organization ON organization.id = users_organization.id_organization GROUP BY organization.name_organization`
+  );
+
+  return allRecords;
+};

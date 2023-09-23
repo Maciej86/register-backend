@@ -12,6 +12,15 @@ const pool = mysql
   })
   .promise();
 
+export const organization = async (id) => {
+  const [organization] = await pool.query(
+    `SELECT * FROM organization WHERE id = ?`,
+    [id]
+  );
+
+  return organization;
+};
+
 export const nameOrganization = async (name) => {
   const [organization] = await pool.query(
     `SELECT * FROM organization WHERE name_organization = ?`,

@@ -15,6 +15,7 @@ import {
   addUserOrganization,
   allOrganizations,
   nameOrganization,
+  organization,
   userOrganization,
 } from "./organizatios.js";
 
@@ -106,6 +107,14 @@ exp.post("/emailexsist", async (req, res) => {
     return;
   }
   res.send("exsist");
+});
+
+// Fetch organization
+exp.post("/organization", async (req, res) => {
+  const { id } = req.body;
+  const organizationRecord = await organization(id);
+
+  res.send(organizationRecord);
 });
 
 // Fetch organization user

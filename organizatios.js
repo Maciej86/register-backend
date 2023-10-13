@@ -30,6 +30,15 @@ export const nameOrganization = async (name) => {
   return organization;
 };
 
+export const editNameOrganization = async (name, id) => {
+  await pool.query(
+    `UPDATE organization SET name_organization = ? WHERE id = ?`,
+    [name, id]
+  );
+
+  return true;
+};
+
 export const userOrganization = async (id) => {
   const [nameOrganization] = await pool.query(
     `SELECT users_organization.id_organization, organization.name_organization FROM users_organization LEFT JOIN organization ON users_organization.id_organization = organization.id WHERE users_organization.id_user = ?`,

@@ -14,6 +14,7 @@ import {
   addOrganization,
   addUserOrganization,
   allOrganizations,
+  editNameOrganization,
   nameOrganization,
   organization,
   userOrganization,
@@ -68,15 +69,8 @@ exp.post("/loginout", async (req, res) => {
 
 // Edit account user
 exp.post("/editaccount", async (req, res) => {
-  const { id, name, lastname, email, theme, organizationid } = req.body;
-  const statusEdit = await editAccount(
-    id,
-    name,
-    lastname,
-    email,
-    theme,
-    organizationid
-  );
+  const { id, name, lastname, email, theme } = req.body;
+  const statusEdit = await editAccount(id, name, lastname, email, theme);
 
   if (statusEdit) {
     let newDataUser = await user(id);
@@ -139,6 +133,15 @@ exp.post("/addorganization", async (req, res) => {
   await addUserOrganization(idUser, idOrganization.insertId);
   const userRecord = await userOrganization(idUser);
   res.send(userRecord);
+});
+
+// Fetch edit name organization
+exp.post("/editnameorganization", async (req, res) => {
+  const { name, id } = req.body;
+  const organizationRecord = await editNameOrganization(name, id);
+  const refrechOrganization = await organization(id);
+
+  res.send(refrechOrganization);
 });
 
 // Fetch organization and count user

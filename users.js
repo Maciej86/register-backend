@@ -53,14 +53,7 @@ export const addTokenUser = async (id) => {
   return;
 };
 
-export const editAccount = async (
-  id,
-  name,
-  lastname,
-  email,
-  theme,
-  organizationid
-) => {
+export const editAccount = async (id, name, lastname, email, theme) => {
   await pool.query(
     `UPDATE user SET name = ?, last_name = ?, email = ?, theme = ? WHERE id = ?`,
     [name, lastname, email, theme, id]

@@ -139,9 +139,8 @@ exp.post("/addorganization", async (req, res) => {
 exp.post("/editnameorganization", async (req, res) => {
   const { name, id } = req.body;
   const organizationRecord = await editNameOrganization(name, id);
-  const refrechOrganization = await organization(id);
 
-  res.send(refrechOrganization);
+  res.send(organizationRecord);
 });
 
 // Fetch organization and count user

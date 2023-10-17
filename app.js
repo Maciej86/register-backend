@@ -17,6 +17,7 @@ import {
   editNameOrganization,
   nameOrganization,
   organization,
+  userInOrganizations,
   userOrganization,
 } from "./organizatios.js";
 
@@ -154,6 +155,13 @@ exp.post("/editnameorganization", async (req, res) => {
 // Fetch organization and count user
 exp.post("/allorganization", async (req, res) => {
   const records = await allOrganizations();
+  res.send(records);
+});
+
+// Fetch user in organization
+exp.post("/userinorganization", async (req, res) => {
+  const { id } = req.body;
+  const records = await userInOrganizations(id);
   res.send(records);
 });
 

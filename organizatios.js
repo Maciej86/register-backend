@@ -75,7 +75,7 @@ export const allOrganizations = async () => {
 
 export const userInOrganizations = async (id) => {
   const [allRecords] = await pool.query(
-    `SELECT user.name, user.last_name, user.role FROM user JOIN users_organization ON user.id = users_organization.id_user WHERE users_organization.id_organization = ? ORDER BY user.role;`,
+    `SELECT user.name, user.last_name, user.role, users_organization.id FROM user JOIN users_organization ON user.id = users_organization.id_user WHERE users_organization.id_organization = ? ORDER BY user.role;`,
     [id]
   );
 

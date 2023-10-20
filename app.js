@@ -17,6 +17,7 @@ import {
   editNameOrganization,
   nameOrganization,
   organization,
+  userDeleteInOrganization,
   userInOrganizations,
   userOrganization,
 } from "./organizatios.js";
@@ -163,6 +164,13 @@ exp.post("/userinorganization", async (req, res) => {
   const { id } = req.body;
   const records = await userInOrganizations(id);
   res.send(records);
+});
+
+// Fetch delete user in organization
+exp.post("/deleteuserinorganization", async (req, res) => {
+  const { id } = req.body;
+  const deleteUser = await userDeleteInOrganization(id);
+  res.send(deleteUser);
 });
 
 exp.use((err, req, res, next) => {

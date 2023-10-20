@@ -168,9 +168,10 @@ exp.post("/userinorganization", async (req, res) => {
 
 // Fetch delete user in organization
 exp.post("/deleteuserinorganization", async (req, res) => {
-  const { id } = req.body;
-  const deleteUser = await userDeleteInOrganization(id);
-  res.send(deleteUser);
+  const { idUsers, idOrganization } = req.body;
+  await userDeleteInOrganization(idUsers);
+  const userInOrganization = await userInOrganizations(idOrganization);
+  res.send(userInOrganization);
 });
 
 exp.use((err, req, res, next) => {

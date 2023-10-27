@@ -20,6 +20,7 @@ import {
   userDeleteInOrganization,
   userInOrganizations,
   userOrganization,
+  userOutOrganizations,
 } from "./organizatios.js";
 
 const exp = express();
@@ -163,6 +164,13 @@ exp.post("/allorganization", async (req, res) => {
 exp.post("/userinorganization", async (req, res) => {
   const { id } = req.body;
   const records = await userInOrganizations(id);
+  res.send(records);
+});
+
+// Fetch user out organization
+exp.post("/useroutorganization", async (req, res) => {
+  const { id } = req.body;
+  const records = await userOutOrganizations(id);
   res.send(records);
 });
 

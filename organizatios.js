@@ -82,6 +82,15 @@ export const userInOrganizations = async (id) => {
   return allRecords;
 };
 
+export const userOutOrganizations = async (id) => {
+  const [allRecords] = await pool.query(
+    `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?)`,
+    [id, id]
+  );
+
+  return allRecords;
+};
+
 export const userDeleteInOrganization = async (id) => {
   const [deleteRecords] = await pool.query(
     `DELETE FROM users_organization WHERE id IN (?)`,

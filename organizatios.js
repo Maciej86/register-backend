@@ -91,11 +91,22 @@ export const userOutOrganizations = async (id) => {
   return allRecords;
 };
 
-export const userDeleteInOrganization = async (id) => {
+export const userDeleteInOrganization = async (idUsers) => {
   const [deleteRecords] = await pool.query(
     `DELETE FROM users_organization WHERE id IN (?)`,
-    [id]
+    [idUsers]
   );
 
   return deleteRecords;
+};
+
+export const userAddForOrganization = async (idUsers, idOrganization) => {
+  const values = idUsers.map((idsUser) => [idsUser, idOrganization]);
+
+  const [addRecords] = await pool.query(
+    `INSERT INTO users_organization (id_user, id_organization) VALUES ?`,
+    [values]
+  );
+
+  return addRecords;
 };

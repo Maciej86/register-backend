@@ -14,6 +14,7 @@ import {
   addOrganization,
   addUserOrganization,
   allOrganizations,
+  deleteOrganization,
   editNameOrganization,
   nameOrganization,
   organization,
@@ -188,6 +189,12 @@ exp.post("/adduserorganization", async (req, res) => {
   const { idUsers, idOrganization } = req.body;
   await userAddForOrganization(idUsers, idOrganization);
   const records = await userOutOrganizations(idOrganization);
+  res.send(records);
+});
+
+exp.post("/deleteorganization", async (req, res) => {
+  const { id } = req.body;
+  const records = await deleteOrganization(id);
   res.send(records);
 });
 

@@ -110,3 +110,12 @@ export const userAddForOrganization = async (idUsers, idOrganization) => {
 
   return addRecords;
 };
+
+export const deleteOrganization = async (id) => {
+  const [deleteRecords] = await pool.query(
+    `DELETE FROM organization WHERE id IN (?)`,
+    [id]
+  );
+
+  return deleteRecords;
+};

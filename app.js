@@ -1,5 +1,7 @@
-import express from "express";
 import cros from "cors";
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import {
   addTokenUser,
   loginUser,
@@ -28,6 +30,21 @@ import {
 const exp = express();
 exp.use(cros());
 exp.use(express.json());
+const server = http.createServer(exp);
+const io = new Server(server, {
+  cors: {
+    origin: `http://localhost:${process.env.PORT_APP_REACT}`,
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  io.emit("TestEvent", "To jest wiadomość do wszystkich klientów");
+
+  socket.on("disconnect", () => {
+    console.log("Rozłączono Socket.io");
+  });
+});
 
 // exp.get("/react/:id", async (req, res) => {
 //   const id = req.params.id;
@@ -202,8 +219,8 @@ exp.use((err, req, res, next) => {
   res.status(500).send("Coś nie tak z serwerem");
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT_SERVER;
 
-exp.listen(port, () => {
+server.listen(port, () => {
   console.log(`Serwer działa na porcie ${port}`);
 });

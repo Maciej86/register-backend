@@ -9,6 +9,7 @@ import {
   passwordExists,
   editUserPassword,
   emailExsist,
+  allUsers,
 } from "./users.js";
 import {
   addOrganization,
@@ -108,6 +109,12 @@ exp.post("/emailexsist", async (req, res) => {
   res.send("exsist");
 });
 
+// All users
+exp.post("/allusers", async (req, res) => {
+  const userSRecord = await allUsers();
+  res.send(userSRecord);
+});
+
 // Fetch organization
 exp.post("/organization", async (req, res) => {
   const { id } = req.body;
@@ -202,7 +209,7 @@ exp.use((err, req, res, next) => {
   res.status(500).send("Coś nie tak z serwerem");
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 exp.listen(port, () => {
   console.log(`Serwer działa na porcie ${port}`);

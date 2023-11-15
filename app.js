@@ -133,7 +133,7 @@ exp.post("/userorganization", async (req, res) => {
 
 // Fetch add new organization
 exp.post("/addorganization", async (req, res) => {
-  const { idUser, name } = req.body;
+  const { idUser, name, createdDate } = req.body;
   const nameOrganizationExsist = await nameOrganization(name);
 
   if (nameOrganizationExsist.length !== 0) {
@@ -141,7 +141,7 @@ exp.post("/addorganization", async (req, res) => {
     return;
   }
 
-  const idOrganization = await addOrganization(name);
+  const idOrganization = await addOrganization(name, idUser, createdDate);
   await addUserOrganization(idUser, idOrganization.insertId);
   const userRecord = await userOrganization(idUser);
   res.send(userRecord);

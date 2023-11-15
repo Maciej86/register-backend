@@ -39,10 +39,10 @@ export const userOrganization = async (id) => {
   return nameOrganization;
 };
 
-export const addOrganization = async (name) => {
+export const addOrganization = async (name, idUser, createdDate) => {
   const [newRow] = await pool.query(
-    `INSERT INTO organization (name_organization) VALUES (?)`,
-    [name]
+    `INSERT INTO organization (name_organization, id_user, created_date) VALUES (?, ?, ?)`,
+    [name, idUser, createdDate]
   );
 
   return newRow;
@@ -67,7 +67,8 @@ export const addUserOrganization = async (idUser, idOrganization) => {
 
 export const allOrganizations = async () => {
   const [allRecords] = await pool.query(
-    `SELECT organization.id, organization.name_organization, COUNT(users_organization.id_user) AS count_user FROM organization LEFT JOIN users_organization ON organization.id = users_organization.id_organization GROUP BY organization.name_organization`
+    `SELECT organization.id, organization.name_organization, DATE_FORMAT(organization.created_date, '%d.%m.%Y') AS add_date, COUNT(users_organization.id_user) AS count_user, user.name,
+    user.last_name FROM organization LEFT JOIN users_organization ON organization.id = users_organization.id_organization LEFT JOIN user ON organization.id_user = user.id GROUP BY organization.name_organization`
   );
 
   return allRecords;

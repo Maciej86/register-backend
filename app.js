@@ -10,6 +10,7 @@ import {
   editUserPassword,
   emailExsist,
   allUsers,
+  addUser,
 } from "./users.js";
 import {
   addOrganization,
@@ -194,9 +195,28 @@ exp.post("/deleteuserinorganization", async (req, res) => {
 // Fetch add user for organization
 exp.post("/adduserorganization", async (req, res) => {
   const { idUsers, idOrganization } = req.body;
-  await userAddForOrganization(idUsers, idOrganization);
+  await userAddForOrganization(idUsers, idOrganization, "idUsers");
   const records = await userOutOrganizations(idOrganization);
   res.send(records);
+});
+
+// Fetch add user for organization
+exp.post("/adduser", async (req, res) => {
+  const { name, lastName, email, type, password, organizations } = req.body;
+  const newUser = await addUser(name, lastName, email, password, type);
+
+  if (newUser === false) {
+    res.send(false);
+    return;
+  }
+  if (organizations.length !== 0) {
+    await userAddForOrganization(
+      newUser.insertId,
+      organizations,
+      "idOrganizations"
+    );
+  }
+  res.send(true);
 });
 
 exp.post("/deleteorganization", async (req, res) => {

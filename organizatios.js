@@ -101,8 +101,21 @@ export const userDeleteInOrganization = async (idUsers) => {
   return deleteRecords;
 };
 
-export const userAddForOrganization = async (idUsers, idOrganization) => {
-  const values = idUsers.map((idsUser) => [idsUser, idOrganization]);
+export const userAddForOrganization = async (
+  idUsers,
+  idOrganization,
+  array
+) => {
+  let values = [];
+
+  switch (array) {
+    case "idUsers":
+      values = idUsers.map((idsUser) => [idsUser, idOrganization]);
+      break;
+    case "idOrganizations":
+      values = idOrganization.map((organization) => [idUsers, organization]);
+      break;
+  }
 
   const [addRecords] = await pool.query(
     `INSERT INTO users_organization (id_user, id_organization) VALUES ?`,

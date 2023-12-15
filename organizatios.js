@@ -67,8 +67,7 @@ export const addUserOrganization = async (idUser, idOrganization) => {
 
 export const allOrganizations = async () => {
   const [allRecords] = await pool.query(
-    `SELECT organization.id, organization.name_organization, DATE_FORMAT(organization.created_date, '%d.%m.%Y') AS add_date, COUNT(users_organization.id_user) AS count_user, user.name,
-    user.last_name FROM organization LEFT JOIN users_organization ON organization.id = users_organization.id_organization LEFT JOIN user ON organization.id_user = user.id GROUP BY organization.name_organization`
+    `SELECT organization.id, organization.name_organization, DATE_FORMAT(organization.created_date, '%d.%m.%Y') AS add_date, COUNT(users_organization.id_user) AS count_user, user.name, user.last_name FROM organization LEFT JOIN users_organization ON organization.id = users_organization.id_organization LEFT JOIN user ON organization.id_user = user.id GROUP BY organization.name_organization`
   );
 
   return allRecords;
@@ -76,7 +75,7 @@ export const allOrganizations = async () => {
 
 export const userInOrganizations = async (id) => {
   const [allRecords] = await pool.query(
-    `SELECT user.name, user.last_name, user.role, users_organization.id FROM user JOIN users_organization ON user.id = users_organization.id_user WHERE users_organization.id_organization = ? ORDER BY user.role;`,
+    `SELECT user.name, user.last_name, user.role, users_organization.id FROM user JOIN users_organization ON user.id = users_organization.id_user WHERE users_organization.id_organization = ? AND user.role > 0 ORDER BY user.role;`,
     [id]
   );
 
@@ -85,7 +84,7 @@ export const userInOrganizations = async (id) => {
 
 export const userOutOrganizations = async (id) => {
   const [allRecords] = await pool.query(
-    `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?)`,
+    `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?) AND user.role > 0;`,
     [id, id]
   );
 

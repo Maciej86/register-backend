@@ -89,7 +89,7 @@ export const editUserPassword = async (id, newpassword) => {
 
 export const allUsers = async () => {
   const [password] = await pool.query(
-    `SELECT u.id, u.name, u.last_name, u.email, u.role, o.id as organization_id, o.name_organization as organization_name FROM user u LEFT JOIN users_organization uo ON u.id = uo.id_user LEFT JOIN organization o ON uo.id_organization = o.id WHERE uo.id_organization IS NULL OR o.id IS NOT NULL AND u.role > 0;`
+    `SELECT u.id, u.name, u.last_name, u.email, u.role, o.id as organization_id, o.name_organization as organization_name FROM user u LEFT JOIN users_organization uo ON u.id = uo.id_user LEFT JOIN organization o ON uo.id_organization = o.id WHERE u.role > 0 AND uo.id_organization IS NULL OR o.id IS NOT NULL;`
   );
   return password;
 };
@@ -100,4 +100,12 @@ export const addUser = async (name, lastName, email, password, type) => {
     [name, lastName, email, password, "", type, "ThemeDefault"]
   );
   return newRow;
+};
+
+export const deleteUser = async (idUsers) => {
+  const [deleteRecords] = await pool.query(`DELETE FROM user WHERE id IN (?)`, [
+    idUsers,
+  ]);
+
+  return deleteRecords;
 };

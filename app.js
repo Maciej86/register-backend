@@ -11,6 +11,7 @@ import {
   emailExsist,
   allUsers,
   addUser,
+  deleteUser,
 } from "./users.js";
 import {
   addOrganization,
@@ -36,6 +37,10 @@ exp.use(express.json());
 //   const react = await getTest(id);
 //   res.send(react);
 // });
+
+// ------------------------------------------------- //
+//                 LOGIN USER ACTION                //
+// ------------------------------------------------//
 
 // User login using the form
 exp.post("/login", async (req, res) => {
@@ -74,6 +79,42 @@ exp.post("/loginout", async (req, res) => {
   res.send(userToken);
 });
 
+// ------------------------------------------------- //
+//                   USER ACTION                    //
+// ------------------------------------------------//
+
+// All users
+exp.post("/allusers", async (req, res) => {
+  const userSRecord = await allUsers();
+  res.send(userSRecord);
+});
+
+// Fetch add user for organization
+exp.post("/adduser", async (req, res) => {
+  const { name, lastName, email, type, password, organizations } = req.body;
+  const newUser = await addUser(name, lastName, email, password, type);
+
+  if (newUser === false) {
+    res.send(false);
+    return;
+  }
+  if (organizations.length !== 0) {
+    await userAddForOrganization(
+      newUser.insertId,
+      organizations,
+      "idOrganizations"
+    );
+  }
+  res.send(true);
+});
+
+// Delete user
+exp.post("/deleteuser", async (req, res) => {
+  const { idUser } = req.body;
+  const deleteRow = await deleteUser(idUser);
+  res.send(deleteRow);
+});
+
 // Edit account user
 exp.post("/editaccount", async (req, res) => {
   const { id, name, lastname, email, theme } = req.body;
@@ -110,11 +151,9 @@ exp.post("/emailexsist", async (req, res) => {
   res.send("exsist");
 });
 
-// All users
-exp.post("/allusers", async (req, res) => {
-  const userSRecord = await allUsers();
-  res.send(userSRecord);
-});
+// ------------------------------------------------- //
+//              ORGANIZATION ACTION                 //
+// ------------------------------------------------//
 
 // Fetch organization
 exp.post("/organization", async (req, res) => {
@@ -124,12 +163,10 @@ exp.post("/organization", async (req, res) => {
   res.send(organizationRecord);
 });
 
-// Fetch organization user
-exp.post("/userorganization", async (req, res) => {
-  const { id } = req.body;
-  const userRecord = await userOrganization(id);
-
-  res.send(userRecord);
+// Fetch organization and count user
+exp.post("/allorganization", async (req, res) => {
+  const records = await allOrganizations();
+  res.send(records);
 });
 
 // Fetch add new organization
@@ -164,10 +201,22 @@ exp.post("/editnameorganization", async (req, res) => {
   res.send(organizationEdit);
 });
 
-// Fetch organization and count user
-exp.post("/allorganization", async (req, res) => {
-  const records = await allOrganizations();
+exp.post("/deleteorganization", async (req, res) => {
+  const { id } = req.body;
+  const records = await deleteOrganization(id);
   res.send(records);
+});
+
+// ------------------------------------------------- //
+//          USER IN ORGANIZATION ACTION             //
+// ------------------------------------------------//
+
+// Fetch organization user
+exp.post("/userorganization", async (req, res) => {
+  const { id } = req.body;
+  const userRecord = await userOrganization(id);
+
+  res.send(userRecord);
 });
 
 // Fetch user in organization
@@ -197,31 +246,6 @@ exp.post("/adduserorganization", async (req, res) => {
   const { idUsers, idOrganization } = req.body;
   await userAddForOrganization(idUsers, idOrganization, "idUsers");
   const records = await userOutOrganizations(idOrganization);
-  res.send(records);
-});
-
-// Fetch add user for organization
-exp.post("/adduser", async (req, res) => {
-  const { name, lastName, email, type, password, organizations } = req.body;
-  const newUser = await addUser(name, lastName, email, password, type);
-
-  if (newUser === false) {
-    res.send(false);
-    return;
-  }
-  if (organizations.length !== 0) {
-    await userAddForOrganization(
-      newUser.insertId,
-      organizations,
-      "idOrganizations"
-    );
-  }
-  res.send(true);
-});
-
-exp.post("/deleteorganization", async (req, res) => {
-  const { id } = req.body;
-  const records = await deleteOrganization(id);
   res.send(records);
 });
 

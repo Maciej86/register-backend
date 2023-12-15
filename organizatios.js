@@ -84,17 +84,17 @@ export const userInOrganizations = async (id) => {
 
 export const userOutOrganizations = async (id) => {
   const [allRecords] = await pool.query(
-    `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?) AND user.role > 0;`,
+    `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?) AND user.role > 0 ORDER BY user.role;`,
     [id, id]
   );
 
   return allRecords;
 };
 
-export const userDeleteInOrganization = async (idUsers) => {
+export const userDeleteInOrganization = async (idUser) => {
   const [deleteRecords] = await pool.query(
     `DELETE FROM users_organization WHERE id IN (?)`,
-    [idUsers]
+    [idUser]
   );
 
   return deleteRecords;

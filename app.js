@@ -111,8 +111,8 @@ exp.post("/adduser", async (req, res) => {
 // Delete user
 exp.post("/deleteuser", async (req, res) => {
   const { idUser } = req.body;
-  const deleteRow = await deleteUser(idUser);
-  res.send(deleteRow);
+  await deleteUser(idUser);
+  res.send(true);
 });
 
 // Edit account user

@@ -89,23 +89,24 @@ export const editUserPassword = async (id, newpassword) => {
 
 export const allUsers = async () => {
   const [password] = await pool.query(
-    `SELECT u.id, u.name, u.last_name, u.email, u.role, o.id as organization_id, o.name_organization as organization_name FROM user u LEFT JOIN users_organization uo ON u.id = uo.id_user LEFT JOIN organization o ON uo.id_organization = o.id WHERE u.role > 0 AND uo.id_organization IS NULL OR o.id IS NOT NULL;`
+    `SELECT u.id, u.name, u.last_name, u.email, u.role, o.id as organization_id, o.name_organization as organization_name FROM user u LEFT JOIN users_organization uo ON u.id = uo.id_user LEFT JOIN organization o ON uo.id_organization = o.id WHERE u.role > 0 AND u.status = "active" AND (uo.id_organization IS NULL OR o.id IS NOT NULL) ORDER BY u.role;`
   );
   return password;
 };
 
 export const addUser = async (name, lastName, email, password, type) => {
   const [newRow] = await pool.query(
-    `INSERT INTO user (name, last_name, email, password, token_login, role, theme) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [name, lastName, email, password, "", type, "ThemeDefault"]
+    `INSERT INTO user (name, last_name, email, password, token_login, role, theme) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, lastName, email, password, "", type, "ThemeDefault", "active"]
   );
   return newRow;
 };
 
-export const deleteUser = async (idUsers) => {
-  const [deleteRecords] = await pool.query(`DELETE FROM user WHERE id IN (?)`, [
-    idUsers,
-  ]);
+export const deleteUser = async (idUser) => {
+  const [deleteRecords] = await pool.query(
+    `UPDATE user SET email = ?, password = ?, token_login = ?, role = ?, theme = ?, status = ? WHERE id = ?`,
+    [null, null, null, null, null, "deactive", idUser]
+  );
 
   return deleteRecords;
 };

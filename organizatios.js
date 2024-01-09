@@ -103,11 +103,11 @@ export const userDeleteInOrganization = async (idUser) => {
 export const userAddForOrganization = async (
   idUsers,
   idOrganization,
-  array
+  typeId
 ) => {
   let values = [];
 
-  switch (array) {
+  switch (typeId) {
     case "idUsers":
       values = idUsers.map((idsUser) => [idsUser, idOrganization]);
       break;

@@ -104,8 +104,8 @@ export const addUser = async (name, lastName, email, password, type) => {
 
 export const deleteUser = async (idUser) => {
   const [deleteRecords] = await pool.query(
-    `UPDATE user SET email = ?, password = ?, token_login = ?, theme = ?, status = ? WHERE id = ?`,
-    [null, null, null, null, "deactive", idUser]
+    `UPDATE user SET email = ?, password = ?, token_login = ?, status = ? WHERE id = ?`,
+    [null, null, null, "deactive", idUser]
   );
 
   return deleteRecords;

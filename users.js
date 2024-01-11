@@ -96,7 +96,7 @@ export const allUsers = async () => {
 
 export const addUser = async (name, lastName, email, password, type) => {
   const [newRow] = await pool.query(
-    `INSERT INTO user (name, last_name, email, password, token_login, role, theme) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO user (name, last_name, email, password, token_login, role, theme, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [name, lastName, email, password, "", type, "ThemeDefault", "active"]
   );
   return newRow;

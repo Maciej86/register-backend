@@ -23,9 +23,9 @@ import {
   organization,
   userAddForOrganization,
   userDeleteInOrganization,
-  userInOrganizations,
+  usersInOrganization,
   userOrganization,
-  userOutOrganizations,
+  usersOutOrganization,
 } from "./organizatios.js";
 
 const exp = express();
@@ -220,16 +220,16 @@ exp.post("/userorganization", async (req, res) => {
 });
 
 // Fetch user in organization
-exp.post("/userinorganization", async (req, res) => {
+exp.post("/usersinorganization", async (req, res) => {
   const { id } = req.body;
-  const records = await userInOrganizations(id);
+  const records = await usersInOrganization(id);
   res.send(records);
 });
 
 // Fetch user out organization
-exp.post("/useroutorganization", async (req, res) => {
+exp.post("/usersoutorganization", async (req, res) => {
   const { id } = req.body;
-  const records = await userOutOrganizations(id);
+  const records = await usersOutOrganization(id);
   res.send(records);
 });
 
@@ -237,7 +237,7 @@ exp.post("/useroutorganization", async (req, res) => {
 exp.post("/deleteuserinorganization", async (req, res) => {
   const { idUsers, idOrganization } = req.body;
   await userDeleteInOrganization(idUsers);
-  const userInOrganization = await userInOrganizations(idOrganization);
+  const userInOrganization = await usersInOrganization(idOrganization);
   res.send(userInOrganization);
 });
 
@@ -245,7 +245,7 @@ exp.post("/deleteuserinorganization", async (req, res) => {
 exp.post("/adduserorganization", async (req, res) => {
   const { idUsers, idOrganization } = req.body;
   await userAddForOrganization(idUsers, idOrganization, "idUsers");
-  const records = await userOutOrganizations(idOrganization);
+  const records = await usersOutOrganization(idOrganization);
   res.send(records);
 });
 

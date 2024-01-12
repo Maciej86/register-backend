@@ -73,7 +73,7 @@ export const allOrganizations = async () => {
   return allRecords;
 };
 
-export const userInOrganizations = async (id) => {
+export const usersInOrganization = async (id) => {
   const [allRecords] = await pool.query(
     `SELECT user.name, user.last_name, user.role, users_organization.id FROM user JOIN users_organization ON user.id = users_organization.id_user WHERE users_organization.id_organization = ? AND user.role > 0 AND user.status = "active" ORDER BY user.role;`,
     [id]
@@ -82,7 +82,7 @@ export const userInOrganizations = async (id) => {
   return allRecords;
 };
 
-export const userOutOrganizations = async (id) => {
+export const usersOutOrganization = async (id) => {
   const [allRecords] = await pool.query(
     `SELECT id, name, last_name, role FROM user WHERE NOT EXISTS (SELECT ? FROM users_organization WHERE users_organization.id_user = user.id AND users_organization.id_organization = ?) AND user.role > 0 AND user.status = "active" ORDER BY user.role;`,
     [id, id]

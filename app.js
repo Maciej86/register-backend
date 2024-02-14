@@ -89,7 +89,7 @@ exp.post("/allusers", async (req, res) => {
   res.send(userSRecord);
 });
 
-// Fetch add user for organization
+// Fetch add new user
 exp.post("/adduser", async (req, res) => {
   const { name, lastName, email, type, password, organizations } = req.body;
   const newUser = await addUser(name, lastName, email, password, type);
@@ -117,13 +117,32 @@ exp.post("/deleteuser", async (req, res) => {
 
 // Edit account user
 exp.post("/editaccount", async (req, res) => {
-  const { id, name, lastname, email, theme } = req.body;
-  const statusEdit = await editAccount(id, name, lastname, email, theme);
+  const { id, name, lastname, email, role, theme } = req.body;
+  const statusEdit = await editAccount(id, name, lastname, email, role, theme);
 
   if (statusEdit) {
     let newDataUser = await user(id);
     res.send(newDataUser);
   }
+});
+
+exp.post("/fetchdatauser", async (req, res) => {
+  const { id } = req.body;
+  const data = await user(id);
+
+  if (data.length === 0) {
+    res.send([]);
+    return;
+  }
+  const organization = await userOrganization(id);
+
+  let idOrganization = [];
+  organization.forEach((item) => {
+    idOrganization = [...idOrganization, item.id_organization];
+  });
+  const dataUser = { dataUser: data[0], organizationId: idOrganization };
+
+  res.send(dataUser);
 });
 
 exp.post("/editpassword", async (req, res) => {
@@ -145,10 +164,10 @@ exp.post("/emailexsist", async (req, res) => {
   const checkEmail = await emailExsist(email);
 
   if (checkEmail.length === 0) {
-    res.send("notexsist");
+    res.send(false);
     return;
   }
-  res.send("exsist");
+  res.send(true);
 });
 
 // ------------------------------------------------- //

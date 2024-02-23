@@ -71,7 +71,7 @@ export const emailExsist = async (email) => {
   return emailExsist;
 };
 
-export const passwordExists = async (id, passworduser) => {
+export const passwordExsist = async (id, passworduser) => {
   const [password] = await pool.query(
     `SELECT password FROM user WHERE id = ? AND password = ?`,
     [id, passworduser]

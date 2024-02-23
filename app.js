@@ -6,7 +6,7 @@ import {
   loginUserToken,
   user,
   editAccount,
-  passwordExists,
+  passwordExsist,
   editUserPassword,
   emailExsist,
   allUsers,
@@ -145,17 +145,23 @@ exp.post("/fetchdatauser", async (req, res) => {
   res.send(dataUser);
 });
 
-exp.post("/editpassword", async (req, res) => {
-  const { id, oldpassword, newpassword } = req.body;
-  const oldPasswordExist = await passwordExists(id, oldpassword);
+// Password exsist
+exp.post("/passwordexsist", async (req, res) => {
+  const { id, oldpassword } = req.body;
+  const oldPasswordExist = await passwordExsist(id, oldpassword);
 
   if (oldPasswordExist.length === 0) {
-    res.send("error");
+    res.send(true);
     return;
   }
+  res.send(false);
+});
+
+exp.post("/editpassword", async (req, res) => {
+  const { id, newpassword } = req.body;
 
   await editUserPassword(id, newpassword);
-  res.send("ok");
+  res.send(true);
 });
 
 // Email exsist

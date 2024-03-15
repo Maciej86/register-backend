@@ -26,6 +26,7 @@ import {
   usersInOrganization,
   userOrganization,
   usersOutOrganization,
+  userDeleteAllOrganization,
 } from "./organizatios.js";
 
 const exp = express();
@@ -272,6 +273,16 @@ exp.post("/adduserorganization", async (req, res) => {
   await userAddForOrganization(idUsers, idOrganization, "idUsers");
   const records = await usersOutOrganization(idOrganization);
   res.send(records);
+});
+
+exp.post("/edituserallorganization", async (req, res) => {
+  const { idUser, idOrganization } = req.body;
+  await userDeleteAllOrganization(idUser);
+
+  if (idOrganization.length > 0) {
+    await userAddForOrganization(idUser, idOrganization, "idOrganizations");
+  }
+  res.send(true);
 });
 
 exp.use((err, req, res, next) => {

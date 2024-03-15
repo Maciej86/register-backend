@@ -100,6 +100,15 @@ export const userDeleteInOrganization = async (idUser) => {
   return deleteRecords;
 };
 
+export const userDeleteAllOrganization = async (idUser) => {
+  const [deleteRecords] = await pool.query(
+    `DELETE FROM users_organization WHERE id_user = ?`,
+    [idUser]
+  );
+
+  return deleteRecords;
+};
+
 export const userAddForOrganization = async (
   idUsers,
   idOrganization,

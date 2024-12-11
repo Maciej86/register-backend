@@ -1,15 +1,5 @@
 import { pool } from "../db.js";
 
-export const allusers = async () => {
-  const [users] = await pool.query(`SELECT * FROM users`);
-
-  return {
-    message: "Użytkownicy",
-    error: false,
-    data: users
-  };
-};
-
 export const register_system_user = async (username, hashedPassword) => {
   try{
     await pool.query(

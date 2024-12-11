@@ -1,7 +1,7 @@
 import express from "express";
 import cros from "cors";
 import dotenv from "dotenv";
-import { userRoutes } from "./models/login.js";
+import { userRoutes } from "./routes/login.js";
 
 const exp = express();
 exp.use(cros());

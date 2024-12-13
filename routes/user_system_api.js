@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post("/register_dev", async (req, res) => {
   const { username, password } = req.body;
-  console.log("req.body:",username, password);
 
   if (!username || !password) {
     return res.status(400).json({ error: "Podaj nazwę użytkownika i hasło." });

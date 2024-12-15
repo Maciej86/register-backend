@@ -30,10 +30,20 @@ export const login_user = async (login, password) => {
       { expiresIn: "24h" }
     );
 
+    const keysToExclude = ["password", "created_at", "updated_at"];
+    const filteredUser = Object.fromEntries(
+        Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
+    );
+    
+    const dataSend = {
+      token: token,
+      user: filteredUser
+    }
+
     return {
       message: "Użytkownik zalogowany",
       error: false,
-      data: [token]
+      data: dataSend
     };
   } catch (error) {
     return {

@@ -1,6 +1,6 @@
-import { pool } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { pool } from "../db.js";
 
 export const login_user = async (login, password) => {
   try{
@@ -32,7 +32,7 @@ export const login_user = async (login, password) => {
 
     const keysToExclude = ["password", "created_at", "updated_at"];
     const filteredUser = Object.fromEntries(
-        Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
+      Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
     );
     
     const dataSend = {
@@ -51,5 +51,35 @@ export const login_user = async (login, password) => {
       error: true,
       data: null
     };
+  }
+};
+
+export const user_refresh = async (header) => {
+  const token = header.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return { message: "Brak tokenu", error: true, data: null };
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const [rows] = await pool.query("SELECT * FROM system_users WHERE id = ?", [decoded.id]);
+
+    if (rows.length === 0) {
+      return { message: "Użytkownik nie znaleziony", error: true, data: null };
+    }
+
+    const user = rows[0];
+    const keysToExclude = ["password", "created_at", "updated_at"];
+    const filteredUser = Object.fromEntries(
+      Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
+    );
+
+    return {
+      message: "Token prawidłowy",
+      error: false,
+      data: {user: filteredUser}
+    };
+  } catch (err) {
+    return { message: "Wystąpił błąd podczas logowania użytkownika", error: true, data: null };
   }
 }

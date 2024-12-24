@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import { register_system_user } from "../query/user_system_query.js";
+import { register_system_user } from "../query/system_user_query.js";
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.post("/register_dev", async (req, res) => {
   res.send(query);
 });
 
-export const userSystem = router;
+export const systemUser = router;

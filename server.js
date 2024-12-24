@@ -2,8 +2,9 @@ import express from "express";
 import cros from "cors";
 import dotenv from "dotenv";
 import { userRoutes } from "./routes/users_api.js";
-import { userSystem } from "./routes/user_system_api.js";
-import { userLogin } from "./routes/user_login_api.js";
+import { systemUser } from "./routes/system_user__api.js";
+import { loginUser } from "./routes/login_user_api.js";
+import { createUser } from "./routes/create_account_api.js";
 
 const exp = express();
 exp.use(cros());
@@ -12,8 +13,9 @@ dotenv.config();
 
 exp.use(userRoutes);
 
-exp.use(userSystem);
-exp.use(userLogin);
+exp.use(systemUser);
+exp.use(loginUser);
+exp.use(createUser);
 
 exp.use((err, req, res, next) => {
   res.status(500).send("Coś nie tak z serwerem");

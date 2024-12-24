@@ -1,5 +1,5 @@
 import express from "express";
-import { login_user, user_refresh } from "../query/user_login_query.js";
+import { login_user, user_refresh } from "../query/login_user_query.js";
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.get("/user_refresh", async (req, res) => {
   res.send(query);
 });
 
-export const userLogin = router;
+export const loginUser = router;

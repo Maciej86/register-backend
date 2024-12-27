@@ -23,7 +23,7 @@ export const login_user = async (login, password) => {
 
     if (!user) {
       return {
-        message: "invalid_login",
+        message: "server.invalid_login",
         error: true,
         data: null
       };
@@ -33,7 +33,7 @@ export const login_user = async (login, password) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return {
-        message: "invalid_login",
+        message: "server.invalid_login",
         error: true,
         data: null
       };
@@ -62,7 +62,7 @@ export const login_user = async (login, password) => {
     };
   } catch (error) {
     return {
-      message: "error_login_user",
+      message: "server.error_login_user",
       error: true,
       data: null
     };
@@ -72,7 +72,7 @@ export const login_user = async (login, password) => {
 export const user_refresh = async (header) => {
   const token = header.headers.authorization?.split(" ")[1];
   if (!token) {
-    return { message: "token_missing", error: true, data: null };
+    return { message: "server.token_missing", error: true, data: null };
   }
 
   try {
@@ -93,7 +93,7 @@ export const user_refresh = async (header) => {
     }
 
     if (!user) {
-      return { message: "user_not_found", error: true, data: null };
+      return { message: "server.user_not_found", error: true, data: null };
     }
 
     const keysToExclude = ["password", "created_at", "updated_at"];
@@ -107,6 +107,6 @@ export const user_refresh = async (header) => {
       data: {user: filteredUser}
     };
   } catch (err) {
-    return { message: "error_login_user", error: true, data: null };
+    return { message: "server.error_login_user", error: true, data: null };
   }
 }

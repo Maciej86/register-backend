@@ -12,11 +12,10 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
       data: result
     };
   } catch (error) {
-    console.error("Błąd zapisu do bazy:", error);
     return {
       message: "Wystąpił błąd podczas dodawania użytkownika",
       error: true,
-      data: null
+      data: error
     };
   }
 };

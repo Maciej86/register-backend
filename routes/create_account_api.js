@@ -23,6 +23,7 @@ router.post("/create_user_personal", async (req, res) => {
   const verificationToken = bytes.toString("base64").replace(/[^a-zA-Z0-9]/g, "").slice(0, 32);
 
   const query = await create_user_personal(first_name, last_name, email, hashedPassword, verificationToken);
+  console.log(query);
 
   res.send(query);
 

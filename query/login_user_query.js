@@ -23,7 +23,7 @@ export const login_user = async (login, password) => {
 
     if (!user) {
       return {
-        message: "Nieprawidłowe dane logowania",
+        message: "invalid_login",
         error: true,
         data: null
       };
@@ -33,7 +33,7 @@ export const login_user = async (login, password) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return {
-        message: "Nieprawidłowe dane logowania",
+        message: "invalid_login",
         error: true,
         data: null
       };
@@ -56,13 +56,13 @@ export const login_user = async (login, password) => {
     }
 
     return {
-      message: "Użytkownik zalogowany",
+      message: "",
       error: false,
       data: dataSend
     };
   } catch (error) {
     return {
-      message: "Wystąpił błąd podczas logowania użytkownika",
+      message: "error_login_user",
       error: true,
       data: null
     };
@@ -72,7 +72,7 @@ export const login_user = async (login, password) => {
 export const user_refresh = async (header) => {
   const token = header.headers.authorization?.split(" ")[1];
   if (!token) {
-    return { message: "Brak tokenu", error: true, data: null };
+    return { message: "token_missing", error: true, data: null };
   }
 
   try {
@@ -93,7 +93,7 @@ export const user_refresh = async (header) => {
     }
 
     if (!user) {
-      return { message: "Użytkownik nie znaleziony", error: true, data: null };
+      return { message: "user_not_found", error: true, data: null };
     }
 
     const keysToExclude = ["password", "created_at", "updated_at"];
@@ -102,11 +102,11 @@ export const user_refresh = async (header) => {
     );
 
     return {
-      message: "Token prawidłowy",
+      message: "",
       error: false,
       data: {user: filteredUser}
     };
   } catch (err) {
-    return { message: "Wystąpił błąd podczas logowania użytkownika", error: true, data: null };
+    return { message: "error_login_user", error: true, data: null };
   }
 }

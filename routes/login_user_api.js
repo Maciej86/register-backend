@@ -7,6 +7,8 @@ router.post("/user_login", async (req, res) => {
   const { login, password } = req.body;
   const query = await login_user(login, password);
 
+  console.log(query);
+
   res.send(query);
 });
 

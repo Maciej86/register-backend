@@ -29,6 +29,13 @@ export const login_user = async (login, password) => {
       };
     }
     
+    if (!user.is_verified) {
+      return {
+        message: "server.account_not_verified",
+        error: true,
+        data: null
+      };
+    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {

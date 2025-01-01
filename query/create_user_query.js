@@ -19,3 +19,61 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
     };
   }
 };
+
+export const verify_account = async (token) => {
+  const tables = [
+    { name: "users"},
+    { name: "personal_accounts"},
+    { name: "system_users"}
+  ];
+  let user = null;
+  let baseName = null
+
+  try {
+    for (const { name } of tables) {
+      const [isToken] = await pool.query(
+        `SELECT id, is_verified, verification_token FROM ${name} WHERE verification_token = ?`,[token]
+      );
+      if (isToken.length > 0) {
+        user = isToken[0];
+        baseName = name;
+        break;
+      }
+    }
+
+    if(!user) {
+      return {
+        message: "Nieprawidłowy token weryfikacyjny",
+        error: true,
+        data: null
+      };
+    }
+
+    if(user.is_verified) {
+      return {
+        message: "Konto już zostało zweryfikowane",
+        error: false,
+        data: null
+      };
+    }
+
+
+    const verityUser = await pool.query(`UPDATE ${baseName} SET is_verified = ? WHERE id = ?`,[true, user.id]);
+
+    return {
+      message: "Konto zostało zweryfikowane",
+      error: false,
+      data: verityUser
+    };
+
+  } catch (error) {
+    return {
+      message: "Wystąpił błąd przy weryfikacji konta.",
+      error: true,
+      data: error
+    };
+  }
+
+
+
+}

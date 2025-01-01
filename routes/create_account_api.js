@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { create_user_personal } from "../query/create_user_query.js";
+import { create_user_personal, verify_account } from "../query/create_user_query.js";
 import { verifyAccount } from "../email/VerifyAccount.js";
 
 const router = express.Router();
@@ -18,6 +18,13 @@ router.post("/create_user_personal", async (req, res) => {
   if(!query.error) {
     verifyAccount(first_name, email, verificationToken);
   }
+  res.send(query);
+});
+
+router.post("/verify_account", async (req, res) => {
+  const {token } = req.body;
+
+  const query = await verify_account(token);
 
   res.send(query);
 

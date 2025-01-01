@@ -4,9 +4,9 @@ import { pool } from "../db.js";
 
 export const login_user = async (login, password) => {
   const tables = [
-    { name: "system_users", role: "system" },
+    { name: "users", role: "user" },
     { name: "personal_accounts", role: "personal" },
-    { name: "users", role: "user" }
+    { name: "system_users", role: "system" }
   ];
   let user = null;
   let userRole = null;

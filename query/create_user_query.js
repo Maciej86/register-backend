@@ -43,7 +43,7 @@ export const verify_account = async (token) => {
 
     if(!user) {
       return {
-        message: "Nieprawidłowy token weryfikacyjny",
+        message: "server.invalid_verification_token",
         error: true,
         data: null
       };
@@ -51,7 +51,7 @@ export const verify_account = async (token) => {
 
     if(user.is_verified) {
       return {
-        message: "Konto już zostało zweryfikowane",
+        message: "server.account_been_verified",
         error: false,
         data: null
       };
@@ -61,14 +61,14 @@ export const verify_account = async (token) => {
     const verityUser = await pool.query(`UPDATE ${baseName} SET is_verified = ? WHERE id = ?`,[true, user.id]);
 
     return {
-      message: "Konto zostało zweryfikowane",
+      message: "server.account_verified_success",
       error: false,
       data: verityUser
     };
 
   } catch (error) {
     return {
-      message: "Wystąpił błąd przy weryfikacji konta.",
+      message: "server.account_verified_error",
       error: true,
       data: error
     };

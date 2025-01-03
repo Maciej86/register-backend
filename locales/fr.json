@@ -1,0 +1,12 @@
+{
+  "footer": {
+    "ask_you_password": "Rappelez-vous, personne de l'équipe Register ne vous demandera jamais votre mot de passe."
+  },
+  "verification" :
+  {
+    "welcome": "Bonjour {{user}}",
+    "thank_you": "Merci d'avoir créé un compte. Pour pouvoir vous y connecter, cliquez sur le bouton ci-dessous pour vérifier votre adresse e-mail.",
+    "button_verify_acconut": "Vérifiez votre compte",
+    "copy_link": "Vous avez des difficultés à cliquer sur le lien ? Copiez et collez l'URL suivante dans votre navigateur."
+  }
+}

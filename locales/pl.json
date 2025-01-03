@@ -1,0 +1,12 @@
+{
+  "footer": {
+    "ask_you_password": "Pamiętaj, nikt z firmy Register nigdy nie poprosi Cię o podanie Twojego hasła."
+  },
+  "verification" :
+  {
+    "welcome": "Witaj {{user}}",
+    "thank_you": "Dziękujemy za założenie konta. Aby móc się do niego zalogować, kliknij poniższy przycisk aby zweryfikować swój adres e-mail.",
+    "button_verify_acconut": "Zweryfikuj konto",
+    "copy_link": "Masz problemy z kliknięciem linku? Wklej następujący adres URL do swojej przeglądarki."
+  }
+}

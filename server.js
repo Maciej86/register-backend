@@ -1,6 +1,7 @@
 import express from "express";
 import cros from "cors";
 import dotenv from "dotenv";
+import { languageMiddleware } from './i18nConfig.js';
 import { userRoutes } from "./routes/users_api.js";
 import { systemUser } from "./routes/system_user__api.js";
 import { loginUser } from "./routes/login_user_api.js";
@@ -9,8 +10,9 @@ import { createUser } from "./routes/create_account_api.js";
 const exp = express();
 exp.use(cros());
 exp.use(express.json());
-dotenv.config();
+exp.use(languageMiddleware);
 
+dotenv.config();
 exp.use(userRoutes);
 
 exp.use(systemUser);

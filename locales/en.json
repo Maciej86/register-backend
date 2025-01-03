@@ -1,0 +1,12 @@
+{
+  "footer": {
+    "ask_you_password": "Remember, no one from Register will ever ask you for your password."
+  },
+  "verification" :
+  {
+    "welcome": "Hello {{user}}",
+    "thank_you": "Thank you for creating an account. To log in, click the button below to verify your email address.",
+    "button_verify_acconut": "Verify Account",
+    "copy_link": "Having trouble clicking the link? Copy and paste the following URL into your browser."
+  }
+}

@@ -16,14 +16,13 @@ router.post("/create_user_personal", async (req, res) => {
   const query = await create_user_personal(first_name, last_name, email, hashedPassword, verificationToken);
 
   if(!query.error) {
-    verifyAccount(first_name, email, verificationToken);
+    verifyAccount(first_name, email, verificationToken, req.language);
   }
   res.send(query);
 });
 
 router.post("/verify_account", async (req, res) => {
   const {token } = req.body;
-
   const query = await verify_account(token);
 
   res.send(query);

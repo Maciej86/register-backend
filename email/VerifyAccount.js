@@ -16,6 +16,6 @@ export const verifyAccount = (first_name, email, verificationToken, language) =>
     text: `REGISTER - Witaj ${first_name} - Kliknij w poniższy przycisk aby zweryfikować konto. - <a href="http://127.0.0.1:5173/verify-account/${verificationToken}">Weryfikuj konto</a>`,
     html: TemplateVerification(first_name, verificationToken, language)
   })
-  // .then(msg => res.send(msg))
-  // .catch(err => res.send(err));
+  .then(msg =>console.log(msg))
+  .catch(err => console.log(err));
 }

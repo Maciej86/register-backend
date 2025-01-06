@@ -42,7 +42,7 @@ export const create_user_business = async (first_name, last_name, email, hashedP
     const idCompany = resultCompany.insertId;
 
     const resultUser = await pool.query(
-      `INSERT INTO users (company_id, first_name, last_name, email, password, phone_number, address_street, address_city, address_postal_code, position, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_main_admin, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, NULL, NULL, true, NULL, NULL, NULL, NULL, NULL, true, false, ? , NOW(), NOW())`,
+      `INSERT INTO users (company_id, first_name, last_name, email, password, phone_number, address_street, address_city, address_postal_code, user_role, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, "main_administrator", NULL, true, NULL, NULL, NULL, NULL, NULL, false, ? , NOW(), NOW())`,
       [idCompany, first_name, last_name, email, hashedPassword, verificationToken]);
 
       return {

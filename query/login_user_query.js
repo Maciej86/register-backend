@@ -9,6 +9,7 @@ export const login_user = async (login, password) => {
     { name: "system_users", type: "system" }
   ];
   let user = null;
+  let tablename = null;
   let userType = null;
 
   try{
@@ -16,6 +17,7 @@ export const login_user = async (login, password) => {
       const [rows] = await pool.query(`SELECT * FROM ${name} WHERE email = ?`, [login]);
       if (rows.length > 0) {
         user = rows[0];
+        tablename = name;
         userType = type;
         break;
       }
@@ -47,7 +49,7 @@ export const login_user = async (login, password) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, type: userType },
+      { id: user.id, email: user.email, table: tablename, type: userType },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -86,22 +88,9 @@ export const user_refresh = async (header) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const tables = [
-      { name: "users", type: "user" },
-      { name: "personal_accounts", type: "personal" },
-      { name: "system_users", type: "system" }
-    ];
-    let user = null;
-    let userType = null;
-
-    for (const { name, type } of tables) {
-      const [rows] = await pool.query(`SELECT * FROM ${name} WHERE id = ?`, [decoded.id]);
-      if (rows.length > 0) {
-        user = rows[0];
-        userType = type;
-        break;
-      }
-    }
+    
+    const [rows] = await pool.query(`SELECT * FROM ${decoded.table} WHERE id = ?`, [decoded.id]);
+    const user = rows[0];
 
     if (!user) {
       return { message: "server.user_not_found", error: true, data: null };
@@ -112,7 +101,7 @@ export const user_refresh = async (header) => {
       Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
     );
 
-    filteredUser.type = userType;
+    filteredUser.type = decoded.type;
 
     return {
       message: "",

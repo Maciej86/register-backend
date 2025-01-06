@@ -4,19 +4,19 @@ import { pool } from "../db.js";
 
 export const login_user = async (login, password) => {
   const tables = [
-    { name: "users", role: "user" },
-    { name: "personal_accounts", role: "personal" },
-    { name: "system_users", role: "system" }
+    { name: "users", type: "user" },
+    { name: "personal_accounts", type: "personal" },
+    { name: "system_users", type: "system" }
   ];
   let user = null;
-  let userRole = null;
+  let userType = null;
 
   try{
-    for (const { name, role } of tables) {
+    for (const { name, type } of tables) {
       const [rows] = await pool.query(`SELECT * FROM ${name} WHERE email = ?`, [login]);
       if (rows.length > 0) {
         user = rows[0];
-        userRole = role;
+        userType = type;
         break;
       }
     }
@@ -47,7 +47,7 @@ export const login_user = async (login, password) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: userRole },
+      { id: user.id, email: user.email, type: userType },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -56,6 +56,8 @@ export const login_user = async (login, password) => {
     const filteredUser = Object.fromEntries(
       Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
     );
+
+    filteredUser.type = userType;
     
     const dataSend = {
       token: token,
@@ -85,16 +87,18 @@ export const user_refresh = async (header) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const tables = [
-      { name: "system_users", role: "admin" },
-      { name: "personal_accounts", role: "personal" },
-      { name: "users", role: "user" }
+      { name: "users", type: "user" },
+      { name: "personal_accounts", type: "personal" },
+      { name: "system_users", type: "system" }
     ];
     let user = null;
+    let userType = null;
 
-    for (const { name } of tables) {
+    for (const { name, type } of tables) {
       const [rows] = await pool.query(`SELECT * FROM ${name} WHERE id = ?`, [decoded.id]);
       if (rows.length > 0) {
         user = rows[0];
+        userType = type;
         break;
       }
     }
@@ -107,6 +111,8 @@ export const user_refresh = async (header) => {
     const filteredUser = Object.fromEntries(
       Object.entries(user).filter(([key]) => !keysToExclude.includes(key))
     );
+
+    filteredUser.type = userType;
 
     return {
       message: "",

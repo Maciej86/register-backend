@@ -33,17 +33,23 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
   }
 };
 
-export const create_user_business = async (first_name, last_name, email, hashedPassword, company, tin, zip_code, city, address, verificationToken) => {
+export const create_user_business = async (first_name, last_name, email, hashedPassword, company, tin, zip_code, city, address, bookkeeping, verificationToken) => {
+  const connection = await pool.getConnection();
+
   try {
-    const [resultCompany] = await pool.query(
+    await connection.beginTransaction();
+
+    const [resultCompany] = await connection.query(
       `INSERT INTO companies (name, tax_identification_number, zip_code, city, address, parent_company_id, subscription_plan, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, "Basic", NOW(), NOW())`,
       [company, tin, zip_code, city, address]);
 
     const idCompany = resultCompany.insertId;
 
-    const resultUser = await pool.query(
-      `INSERT INTO users (company_id, first_name, last_name, email, password, phone_number, address_street, address_city, address_postal_code, user_role, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, "main_administrator", NULL, true, NULL, NULL, NULL, NULL, NULL, false, ? , NOW(), NOW())`,
-      [idCompany, first_name, last_name, email, hashedPassword, verificationToken]);
+    const resultUser = await connection.query(
+      `INSERT INTO users (company_id, first_name, last_name, email, password, phone_number, address_street, address_city, address_postal_code, user_role, bookkeeping, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, "main_administrator", ?, NULL, true, NULL, NULL, NULL, NULL, NULL, false, ? , NOW(), NOW())`,
+      [idCompany, first_name, last_name, email, hashedPassword, bookkeeping, verificationToken]);
+
+      await connection.commit();
 
       return {
         message: "server.create_account_ok",

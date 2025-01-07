@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.post("/create_user_personal", async (req, res) => {
   const {first_name, last_name, email, password } = req.body;
-L
+
+  console.log("tutaj");
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const bytes = crypto.randomBytes(32);
   const verificationToken = bytes.toString("base64").replace(/[^a-zA-Z0-9]/g, "").slice(0, 32);
@@ -22,7 +24,7 @@ L
 });
 
 router.post("/create_user_business", async (req, res) => {
-  const {first_name, last_name, email, password, company, tin, zip_code, city, address, bookkeeping } = req.body;
+  const {first_name, last_name, email, password, company, tin, zip_code, city, address, bookkeeping} = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const bytes = crypto.randomBytes(32);

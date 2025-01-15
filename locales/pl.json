@@ -1,12 +1,19 @@
 {
+  "header": {
+    "welcome": "Witaj {{user}}"
+  },
+  "body": {
+    "copy_link": "Masz problemy z kliknięciem linku? Wklej poniższy adres URL do swojej przeglądarki."
+  },
   "footer": {
     "ask_you_password": "Pamiętaj, nikt z firmy Register nigdy nie poprosi Cię o podanie Twojego hasła."
   },
-  "verification" :
-  {
-    "welcome": "Witaj {{user}}",
+  "verification": {
     "thank_you": "Dziękujemy za założenie konta. Aby móc się do niego zalogować, kliknij poniższy przycisk aby zweryfikować swój adres e-mail.",
-    "button_verify_acconut": "Zweryfikuj konto",
-    "copy_link": "Masz problemy z kliknięciem linku? Wklej następujący adres URL do swojej przeglądarki."
+    "button_verify_acconut": "Zweryfikuj konto"
+  },
+  "password_reset": {
+    "send_message": "Otrzymałeś tą wiadomość, gdyż zgłosiłeś zmianę hasła. Klikanij poniższy przycisk aby utworzyć nowe hasło. Jeżeli nie prosiłeś o zresetowanie hasła zignoruj tą wiadomość.",
+    "button_password_reset": "Resetuj hasło"
   }
 }

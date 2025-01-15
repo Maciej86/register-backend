@@ -13,7 +13,7 @@ export const TemplateVerification = (user, token, language) => {
             <td>
               <table style="width: 80%; margin: 20px auto; padding: 10px; background-color: rgb(250,250,250); color: rgb(69,69,69); font-size: 16px; text-align: center; border-radius: 10px;">
                 <tr>
-                  <td><h1 style="margin-top: 15px;">${t("verification.welcome", { user })}</h1></td>
+                  <td><h1 style="margin-top: 15px;">${t("header.welcome", { user })}</h1></td>
                 </tr>
                 <tr>
                   <td><p style="margin: 15px 0; line-height: 1.5;">${t("verification.thank_you")}</p></td>
@@ -23,7 +23,7 @@ export const TemplateVerification = (user, token, language) => {
                 </tr>
                 <tr>
                   <td style="padding-bottom: 30px;">
-                    <p style="margin: 15px 0; color: rgb(150, 150, 150); line-height: 1.5;">${t("verification.copy_link")}</p>
+                    <p style="margin: 15px 0; color: rgb(150, 150, 150); line-height: 1.5;">${t("body.copy_link")}</p>
                     <p><a href="${url}" style="color: rgb(52, 152, 219)">${url}</a></p>
                   </td>
                 </tr>

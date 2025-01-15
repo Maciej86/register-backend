@@ -9,10 +9,12 @@
     "ask_you_password": "Pamiętaj, nikt z firmy Register nigdy nie poprosi Cię o podanie Twojego hasła."
   },
   "verification": {
+    "thank_you_text": "REGISTER - Witaj {{nameUser}} Dziękujemy za założenie konta. Aby móc się do niego zalogować, kliknij link aby zweryfikować swój adres e-mail. {{url}}",
     "thank_you": "Dziękujemy za założenie konta. Aby móc się do niego zalogować, kliknij poniższy przycisk aby zweryfikować swój adres e-mail.",
     "button_verify_acconut": "Zweryfikuj konto"
   },
   "password_reset": {
+    "send_message_text": "REGISTER - Witaj {{nameUser}}. Otrzymałeś tą wiadomość, gdyż zgłosiłeś zmianę hasła. Kliknij w link aby utworzyć nowe hasło. {{url}} Jeżeli nie prosiłeś o zresetowanie hasła zignoruj tą wiadomość.",
     "send_message": "Otrzymałeś tą wiadomość, gdyż zgłosiłeś zmianę hasła. Klikanij poniższy przycisk aby utworzyć nowe hasło. Jeżeli nie prosiłeś o zresetowanie hasła zignoruj tą wiadomość.",
     "button_password_reset": "Resetuj hasło"
   }

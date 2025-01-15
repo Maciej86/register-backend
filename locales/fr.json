@@ -13,6 +13,7 @@
     "button_verify_acconut": "Vérifiez votre compte"
   },
   "password_reset": {
+    "send_message_text": "REGISTER - Bonjour {{nameUser}}. Vous avez reçu ce message parce que vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien pour créer un nouveau mot de passe. {{url}} Si vous n'avez pas demandé de réinitialisation de mot de passe, ignorez ce message.",
     "send_message": "Vous avez reçu ce message parce que vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe. Si vous n'avez pas demandé de réinitialisation de mot de passe, ignorez ce message.",
     "button_password_reset": "Réinitialiser le mot de passe"
   }

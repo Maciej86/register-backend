@@ -14,6 +14,7 @@
     "button_verify_acconut": "Konto bestätigen"
   },
   "password_reset": {
+    "send_message_text": "REGISTER - Hallo {{nameUser}}. Sie haben diese Nachricht erhalten, weil Sie eine Zurücksetzung des Passworts angefordert haben. Klicken Sie auf den Link, um ein neues Passwort zu erstellen. {{url}} Wenn Sie keine Zurücksetzung des Passworts angefordert haben, ignorieren Sie diese Nachricht.",
     "send_message": "Sie haben diese Nachricht erhalten, weil Sie eine Passwortänderung angefordert haben. Klicken Sie auf die Schaltfläche unten, um ein neues Passwort zu erstellen. Wenn Sie keine Zurücksetzung des Passworts angefordert haben, ignorieren Sie diese Nachricht.",
     "button_password_reset": "Passwort zurücksetzen"
   }

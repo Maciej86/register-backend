@@ -1,8 +1,11 @@
 import i18next from 'i18next';
+import dotenv from "dotenv";
 
 export const TemplatePasswordReset = (user, token, language) => {
+  dotenv.config();
+
   const t = i18next.getFixedT(language);
-  const url = `http://127.0.0.1:5173/password-reset-form/${token}`;
+  const url = `${process.env.DOMAIN}/password-reset-form/${token}`;
 
   return (
     `<html>

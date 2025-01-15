@@ -14,6 +14,7 @@
     "button_verify_acconut": "Verify Account"
   },
   "password_reset": {
+    "send_message_text": "REGISTER - Hello {{nameUser}}. You received this message because you requested a password reset. Click the link to create a new password. {{url}} If you did not request a password reset, please ignore this message.",
     "send_message": "You received this message because you requested a password change. Click the button below to create a new password. If you did not request a password reset, please ignore this message.",
     "button_password_reset": "Reset Password"
   }

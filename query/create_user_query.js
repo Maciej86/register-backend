@@ -16,7 +16,7 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
     }
 
     const result = await pool.query(
-      "INSERT INTO personal_accounts (first_name, last_name, email, password, created_at, updated_at, is_verified, verification_token) VALUES (?, ?, ?, ?, NOW(), NOW(), false, ?)",
+      `INSERT INTO personal_accounts (first_name, last_name, email, password, theme, created_at, updated_at, is_verified, verification_token) VALUES (?, ?, ?, ?, "Default", NOW(), NOW(), false, ?)`,
       [first_name, last_name, email, hashedPassword, verificationToken]);
 
     return {
@@ -46,7 +46,7 @@ export const create_user_business = async (first_name, last_name, email, hashedP
     const idCompany = resultCompany.insertId;
 
     const resultUser = await connection.query(
-      `INSERT INTO users (company_id, first_name, last_name, email, password, phone_number, address_street, address_city, address_postal_code, user_role, bookkeeping, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, "main_administrator", ?, NULL, true, NULL, NULL, NULL, NULL, NULL, false, ? , NOW(), NOW())`,
+      `INSERT INTO users (company_id, first_name, last_name, email, password, theme, phone_number, address_street, address_city, address_postal_code, user_role, bookkeeping, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, ?, "Default", NULL, NULL, NULL, NULL, "main_administrator", ?, NULL, true, NULL, NULL, NULL, NULL, NULL, false, ? , NOW(), NOW())`,
       [idCompany, first_name, last_name, email, hashedPassword, bookkeeping, verificationToken]);
 
     await connection.commit();

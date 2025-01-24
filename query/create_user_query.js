@@ -16,7 +16,7 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
     }
 
     const result = await pool.query(
-      `INSERT INTO personal_accounts (first_name, last_name, email, password, theme, created_at, updated_at, is_verified, verification_token) VALUES (?, ?, ?, ?, "defaultTheme", NOW(), NOW(), false, ?)`,
+      `INSERT INTO personal_accounts (first_name, last_name, email, password, theme, created_at, verification_token, updated_at, is_verified) VALUES (?, ?, ?, ?, "defaultTheme", false, ?, NOW(), NOW())`,
       [first_name, last_name, email, hashedPassword, verificationToken]);
 
     return {

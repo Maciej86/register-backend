@@ -61,6 +61,16 @@ export const login_user = async (login, password) => {
 
     filteredUser.type = userType;
     
+    if (user.user_role === "main_administrator" && user.company_id) {
+      const [companyRows] = await pool.query(
+        "SELECT * FROM companies WHERE id = ?", 
+        [user.company_id]
+      );
+      if (companyRows.length > 0) {
+        filteredUser.company = companyRows[0];
+      }
+    }
+    
     const dataSend = {
       token: token,
       user: filteredUser
@@ -102,6 +112,16 @@ export const user_refresh = async (header) => {
     );
 
     filteredUser.type = decoded.type;
+
+    if (user.user_role === "main_administrator" && user.company_id) {
+      const [companyRows] = await pool.query(
+        "SELECT * FROM companies WHERE id = ?", 
+        [user.company_id]
+      );
+      if (companyRows.length > 0) {
+        filteredUser.company = companyRows[0];
+      }
+    }
 
     return {
       message: "",

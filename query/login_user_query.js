@@ -61,13 +61,23 @@ export const login_user = async (login, password) => {
 
     filteredUser.type = userType;
     
-    if (user.user_role === "main_administrator" && user.company_id) {
+    if (user.user_role !== "employee") {
       const [companyRows] = await pool.query(
         "SELECT * FROM companies WHERE id = ?", 
         [user.company_id]
       );
       if (companyRows.length > 0) {
         filteredUser.company = companyRows[0];
+      }
+    }
+    
+    if (filteredUser.type === "user" && user.user_role !== "employee") {
+      const [planRows] = await pool.query(
+        "SELECT * FROM plans WHERE name = ?", 
+        [filteredUser.company.subscription_plan]
+      );
+      if (planRows.length > 0) {
+        filteredUser.plan = planRows[0];
       }
     }
     
@@ -113,13 +123,23 @@ export const user_refresh = async (header) => {
 
     filteredUser.type = decoded.type;
 
-    if (user.user_role === "main_administrator" && user.company_id) {
+    if (user.user_role !== "employee") {
       const [companyRows] = await pool.query(
         "SELECT * FROM companies WHERE id = ?", 
         [user.company_id]
       );
       if (companyRows.length > 0) {
         filteredUser.company = companyRows[0];
+      }
+    }
+
+    if (filteredUser.type === "user" && user.user_role !== "employee") {
+      const [planRows] = await pool.query(
+        "SELECT * FROM plans WHERE name = ?", 
+        [filteredUser.company.subscription_plan]
+      );
+      if (planRows.length > 0) {
+        filteredUser.plan = planRows[0];
       }
     }
 

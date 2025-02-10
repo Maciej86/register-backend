@@ -19,11 +19,11 @@ export const company_accountants = async (companyId) => {
     );
 
     return {
-      message: "server.create_account_ok",
+      message: "",
       error: false,
       data: rows
     };
-  } catch {
+  } catch (error) {
     return {
       message: "server.create_account_error",
       error: true,

@@ -3,7 +3,7 @@ import { pool } from "../db.js";
 
 export const authorizeCompanyAccess = async (req, res, next) => {
   try {
-    const companyId = parseInt(req.params.companyId);
+    const companyId = parseInt(req.query.companyId);
     const userId = req.user.id;
 
     if (!companyId) {

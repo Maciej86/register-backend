@@ -1,21 +1,22 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { clearAuthCookie } from "./clearAuthCookie.js";
 
 dotenv.config();
 
 export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "ERROR" });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: "ERROR" });
+  try {
+    const token = req.cookies.auth_token;
+    if (!token) {
+      clearAuthCookie(res);
+      return res.status(401).json({ error: true, message: "ERROR" });
     }
-    req.user = user;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
     next();
-  });
+  } catch (error) {
+    clearAuthCookie(res);
+    return res.status(403).json({ error: true, message: "ERROR" });
+  }
 };

@@ -1,8 +1,13 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import { pool } from "../db.js";
+import { clearAuthCookie } from "../authorization/clearAuthCookie.js";
 
-export const login_user = async (login, password) => {
+dotenv.config();
+
+export const login_user = async (req, res) => {
+  const { login, password } = req.body;
   const tables = [
     { name: "users", type: "user" },
     { name: "personal_accounts", type: "personal" },
@@ -47,9 +52,9 @@ export const login_user = async (login, password) => {
         data: null
       };
     }
-
+    
     const token = jwt.sign(
-      { id: user.id, email: user.email, table: tablename, type: userType },
+      { id: user.id, email: user.email, companyId: user.company_id, table: tablename, type: userType },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -80,9 +85,15 @@ export const login_user = async (login, password) => {
         filteredUser.plan = planRows[0];
       }
     }
+
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      sameSite: "Strict",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     
     const dataSend = {
-      token: token,
       user: filteredUser
     }
 
@@ -92,6 +103,7 @@ export const login_user = async (login, password) => {
       data: dataSend
     };
   } catch (error) {
+    console.log(error);
     return {
       message: "server.error_login_user",
       error: true,
@@ -100,8 +112,8 @@ export const login_user = async (login, password) => {
   }
 };
 
-export const user_refresh = async (header) => {
-  const token = header.headers.authorization?.split(" ")[1];
+export const user_refresh = async (req) => {
+  const token = req.cookies.auth_token;
   if (!token) {
     return { message: "server.token_missing", error: true, data: null };
   }
@@ -113,6 +125,7 @@ export const user_refresh = async (header) => {
     const user = rows[0];
 
     if (!user) {
+      clearAuthCookie(res);
       return { message: "server.user_not_found", error: true, data: null };
     }
 
@@ -149,6 +162,7 @@ export const user_refresh = async (header) => {
       data: {user: filteredUser}
     };
   } catch (err) {
+    clearAuthCookie(res);
     return { message: "server.error_login_user", error: true, data: null };
   }
 }

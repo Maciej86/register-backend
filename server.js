@@ -1,6 +1,7 @@
 import express from "express";
 import cros from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { languageMiddleware } from './i18nConfig.js';
 import { systemUser } from "./routes/system_user__api.js";
 import { loginUser } from "./routes/login_user_api.js";
@@ -9,7 +10,11 @@ import { passwordReset } from "./routes/password_reset_api.js";
 import { companyRoutes } from "./routes/company_api.js";
 
 const exp = express();
-exp.use(cros());
+exp.use(cros({
+  origin: process.env.DOMAIN,
+  credentials: true
+}));
+exp.use(cookieParser());
 exp.use(express.json());
 exp.use(languageMiddleware);
 

@@ -76,7 +76,8 @@ export const login_user = async (req, res) => {
       }
     }
     
-    if (filteredUser.type === "user" && user.user_role !== "employee") {
+    // Additional information about the plan of the user who purchased access
+    if (filteredUser.type === "user" && filteredUser.company.parent_company_id === null && user.user_role !== "employee") {
       const [planRows] = await pool.query(
         "SELECT * FROM plans WHERE name = ?", 
         [filteredUser.company.subscription_plan]
@@ -159,7 +160,8 @@ export const user_refresh = async (req) => {
       }
     }
 
-    if (filteredUser.type === "user" && user.user_role !== "employee") {
+    // Additional information about the plan of the user who purchased access
+    if (filteredUser.type === "user" && filteredUser.company.parent_company_id === null && user.user_role !== "employee") {
       const [planRows] = await pool.query(
         "SELECT * FROM plans WHERE name = ?", 
         [filteredUser.company.subscription_plan]

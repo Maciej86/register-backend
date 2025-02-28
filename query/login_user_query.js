@@ -81,9 +81,22 @@ export const login_user = async (req, res) => {
         "SELECT * FROM plans WHERE name = ?", 
         [filteredUser.company.subscription_plan]
       );
-      if (planRows.length > 0) {
-        filteredUser.plan = planRows[0];
-      }
+      filteredUser.plan = planRows[0];
+
+      const [createdCompanies] = await pool.query(
+        "SELECT COUNT(*) AS company_count FROM companies WHERE parent_company_id = ?", 
+        [user.company_id]
+      );
+  
+      const [userCount] = await pool.query(
+        `SELECT COUNT(*) AS users_count 
+         FROM users 
+         WHERE company_id IN (SELECT id FROM companies WHERE parent_company_id = ?)`, 
+        [user.company_id]
+      );
+
+      filteredUser.plan.created_companies_count = createdCompanies[0]?.company_count || 0;
+      filteredUser.plan.created_companies_users_count = userCount[0]?.users_count || 0;
     }
 
     res.cookie("auth_token", token, {
@@ -151,9 +164,22 @@ export const user_refresh = async (req) => {
         "SELECT * FROM plans WHERE name = ?", 
         [filteredUser.company.subscription_plan]
       );
-      if (planRows.length > 0) {
-        filteredUser.plan = planRows[0];
-      }
+      filteredUser.plan = planRows[0];
+
+      const [createdCompanies] = await pool.query(
+        "SELECT COUNT(*) AS company_count FROM companies WHERE parent_company_id = ?", 
+        [user.company_id]
+      );
+  
+      const [userCount] = await pool.query(
+        `SELECT COUNT(*) AS users_count 
+         FROM users 
+         WHERE company_id IN (SELECT id FROM companies WHERE parent_company_id = ?)`, 
+        [user.company_id]
+      );
+      
+      filteredUser.plan.created_companies_count = createdCompanies[0]?.company_count || 0;
+      filteredUser.plan.created_companies_users_count = userCount[0]?.users_count || 0;
     }
 
     return {

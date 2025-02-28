@@ -21,7 +21,7 @@ export const password_reset_add_token = async (email, passwordResetToken, expira
 
     if(!user) {
       return {
-        message: "server.password_reset_success",
+        message: "server.login_app.password_reset_success",
         error: true,
         data: null
       };
@@ -30,14 +30,14 @@ export const password_reset_add_token = async (email, passwordResetToken, expira
     await pool.query('INSERT INTO password_reset (email, token, expiration, table_name, created_at) VALUES (?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE token = ?, expiration = ?, table_name = ?, created_at =  NOW()', [email, passwordResetToken, expiration, tablename, passwordResetToken, expiration, tablename]);
 
     return {
-      message: "server.password_reset_success",
+      message: "server.login_app.password_reset_success",
       error: false,
       data: {userName: user.first_name}
     };
 
   } catch (error) {
     return {
-      message: "server.password_reset_error",
+      message: "server.login_app.password_reset_error",
       error: true,
       data: error
     };
@@ -50,21 +50,21 @@ export const password_reset_check_token = async (token) => {
 
     if (rows.length === 0 || new Date(rows[0].expiration) < Date.now()) {
       return {
-        message: "server.password_reset_token_incorrect",
+        message: "server.login_app.password_reset_token_incorrect",
         error: true,
         data: null
       };
     }
 
     return {
-      message: "server.password_reset_token_success",
+      message: "server.login_app.password_reset_token_success",
       error: false,
       data: {email: rows[0].email, table: rows[0].table_name}
     };
 
   } catch (error) {
     return {
-      message: "server.password_reset_token_error",
+      message: "server.login_app.password_reset_token_error",
       error: true,
       data: error
     };
@@ -83,14 +83,14 @@ export const password_reset_save = async (hashedPassword, email, table) => {
     await connection.commit();
 
     return {
-      message: "server.password_reset_save_success",
+      message: "server.login_app.password_reset_save_success",
       error: false,
       data: result
     };
 
   } catch (error) {
     return {
-      message: "server.password_reset_save_error",
+      message: "server.login_app.password_reset_save_error",
       error: true,
       data: error
     };

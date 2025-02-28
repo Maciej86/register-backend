@@ -30,7 +30,7 @@ export const login_user = async (req, res) => {
 
     if (!user) {
       return {
-        message: "server.invalid_login",
+        message: "server.login_app.invalid_login",
         error: true,
         data: null
       };
@@ -38,7 +38,7 @@ export const login_user = async (req, res) => {
     
     if (!user.is_verified) {
       return {
-        message: "server.account_not_verified",
+        message: "server.login_app.account_not_verified",
         error: true,
         data: null
       };
@@ -47,7 +47,7 @@ export const login_user = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return {
-        message: "server.invalid_login",
+        message: "server.login_app.invalid_login",
         error: true,
         data: null
       };
@@ -105,7 +105,7 @@ export const login_user = async (req, res) => {
   } catch (error) {
     console.log(error);
     return {
-      message: "server.error_login_user",
+      message: "server.login_app.error_login_user",
       error: true,
       data: null
     };
@@ -163,6 +163,6 @@ export const user_refresh = async (req) => {
     };
   } catch (err) {
     clearAuthCookie(res);
-    return { message: "server.error_login_user", error: true, data: null };
+    return { message: "server.login_app.error_login_user", error: true, data: null };
   }
 }

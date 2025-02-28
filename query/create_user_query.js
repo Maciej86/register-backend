@@ -20,13 +20,13 @@ export const create_user_personal = async (first_name, last_name, email, hashedP
       [first_name, last_name, email, hashedPassword, verificationToken]);
 
     return {
-      message: "server.create_account_ok",
+      message: "server.login_app.create_account_ok",
       error: false,
       data: result
     };
   } catch (error) {
     return {
-      message: "server.create_account_error",
+      message: "server.login_app.create_account_error",
       error: true,
       data: error
     };
@@ -50,16 +50,20 @@ export const create_user_business = async (first_name, last_name, email, hashedP
       [idCompany, first_name, last_name, email, hashedPassword, bookkeeping, verificationToken]);
 
     await connection.commit();
+    connection.release();
 
     return {
-      message: "server.create_account_ok",
+      message: "server.login_app.create_account_ok",
       error: false,
       data: resultUser
     };
 
   } catch (error) {
+    await connection.rollback();
+    connection.release();
+
     return {
-      message: "server.create_account_error",
+      message: "server.login_app.create_account_error",
       error: true,
       data: error
     };
@@ -90,7 +94,7 @@ export const verify_account = async (token) => {
 
     if(!user) {
       return {
-        message: "server.invalid_verification_token",
+        message: "server.login_app.invalid_verification_token",
         error: true,
         data: null
       };
@@ -98,7 +102,7 @@ export const verify_account = async (token) => {
 
     if(user.is_verified) {
       return {
-        message: "server.account_been_verified",
+        message: "server.login_app.account_been_verified",
         error: false,
         data: null
       };
@@ -108,14 +112,14 @@ export const verify_account = async (token) => {
     const verityUser = await pool.query(`UPDATE ${baseName} SET is_verified = ? WHERE id = ?`,[true, user.id]);
 
     return {
-      message: "server.account_verified_success",
+      message: "server.login_app.account_verified_success",
       error: false,
       data: verityUser
     };
 
   } catch (error) {
     return {
-      message: "server.account_verified_error",
+      message: "server.login_app.account_verified_error",
       error: true,
       data: error
     };

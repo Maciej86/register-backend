@@ -5,7 +5,7 @@ import { authorizeCompanyAccess } from "../authorization/authorizeCompanyAccess.
 
 const router = express.Router();
 
-router.get("/company_accountants", authenticateToken, authorizeCompanyAccess, async (req, res) => {
+router.get("/company_accountants", authenticateToken, async (req, res) => {
   const companyId = req.query.companyId;
   const query = await company_accountants(companyId) 
 

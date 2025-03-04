@@ -5,7 +5,7 @@ import { authenticateToken } from "../authorization/authenticateToken.js";
 const router = express.Router();
 
 router.get("/company_accountants", authenticateToken, async (req, res) => {
-  const companyId = req.query.companyId;
+  const companyId = req.user.companyId;
   const query = await company_accountants(companyId) 
 
   res.send(query);

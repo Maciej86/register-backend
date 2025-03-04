@@ -1,7 +1,6 @@
 import express from "express";
 import { add_company, company_accountants } from "../query/company_query.js";
 import { authenticateToken } from "../authorization/authenticateToken.js";
-import { authorizeCompanyAccess } from "../authorization/authorizeCompanyAccess.js";
 
 const router = express.Router();
 

@@ -1,8 +1,16 @@
 import express from "express";
-import { add_company, company_accountants } from "../query/company_query.js";
+import { add_company, companies, company_accountants } from "../query/company_query.js";
 import { authenticateToken } from "../authorization/authenticateToken.js";
 
 const router = express.Router();
+
+router.get("/companies", authenticateToken, async (req, res) => {
+  const selectedColumns = ["id", "name", "tax_identification_number", "zip_code", "city", "address", "total_employees", "manager_child_company", "accountants", "created_at"];
+  const companyId = req.user.companyId;
+  const query = await companies(companyId, selectedColumns) 
+
+  res.send(query);
+});
 
 router.get("/company_accountants", authenticateToken, async (req, res) => {
   const companyId = req.user.companyId;

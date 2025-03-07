@@ -12,7 +12,7 @@ export const companies = async (companyId, selectedColumns) => {
       (SELECT COUNT(*) FROM users WHERE company_id = c.id) AS total_employees
     FROM companies c
     LEFT JOIN users u ON c.id = u.company_id AND u.user_role = 'manager'
-    WHERE c.parent_company_id = ?;
+    WHERE c.parent_company_id = ? ORDER BY c.created_at DESC;
   `;
 
   const accountantsQuery = `

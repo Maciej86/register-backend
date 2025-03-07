@@ -1,3 +1,4 @@
+import { columnsConfigDataTable } from "../columnsConfigDataTable.js";
 import { pool } from "../db.js";
 
 export const companies = async (companyId, selectedColumns) => {
@@ -87,13 +88,7 @@ export const companies = async (companyId, selectedColumns) => {
       created_at:  company.created_at
     }));
 
-    const columnsConfig = columns.filter(column => selectedColumns.includes(column.field)).map(column => ({
-      field: column.field,
-      nazwa: column.name,
-      size: column.size,
-      visible: column.visible,
-      textAlign: column.textAlign
-    }));
+    const columnsConfig = columnsConfigDataTable(columns, selectedColumns);
 
     return {
       message: "list_contractors.fetch_list_success",

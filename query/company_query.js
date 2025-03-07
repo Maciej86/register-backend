@@ -29,10 +29,7 @@ export const companies = async (companyId, selectedColumns) => {
     );
   `;
 
-  const columnsQuery = `
-    SELECT field, name, size, visible
-    FROM columns_config;
-  `;
+  const columnsQuery = `SELECT * FROM columns_config`;
 
   const connection = await pool.getConnection();
   try {
@@ -77,13 +74,6 @@ export const companies = async (companyId, selectedColumns) => {
       };
     });
 
-    const columnsConfig = columns.filter(column => selectedColumns.includes(column.field)).map(column => ({
-      field: column.field,
-      nazwa: column.name,
-      size: column.size !== null ? column.size : null,
-      visible: column.visible
-    }));
-
     const rows = companiesWithAccountants.map(company => ({
       id: company.id,
       name: company.name,
@@ -95,6 +85,14 @@ export const companies = async (companyId, selectedColumns) => {
       manager_child_company:`${company.manager.first_name} ${company.manager.last_name}`,
       accountants: company.accountants.map(acc => `${acc.first_name} ${acc.last_name}`).join(", "),
       created_at:  company.created_at
+    }));
+
+    const columnsConfig = columns.filter(column => selectedColumns.includes(column.field)).map(column => ({
+      field: column.field,
+      nazwa: column.name,
+      size: column.size,
+      visible: column.visible,
+      textAlign: column.textAlign
     }));
 
     return {

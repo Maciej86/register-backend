@@ -5,7 +5,7 @@ import { authenticateToken } from "../authorization/authenticateToken.js";
 const router = express.Router();
 
 router.get("/companies", authenticateToken, async (req, res) => {
-  const selectedColumns = ["id", "name", "tax_identification_number", "zip_code", "city", "address", "total_employees", "manager_child_company", "accountants", "created_at"];
+  const selectedColumns = ["id", "name_company", "tax_identification_number", "zip_code", "city", "address", "total_employees", "manager_child_company", "phone", "email", "accountants", "created_at"];
   const companyId = req.user.companyId;
   const query = await companies(companyId, selectedColumns) 
 

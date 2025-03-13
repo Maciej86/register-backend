@@ -9,6 +9,7 @@ export const companies = async (companyId, selectedColumns) => {
       u.id AS manager_id,
       u.first_name AS manager_first_name,
       u.last_name AS manager_last_name,
+      u.phone_number AS manager_phone_number,
       u.email AS manager_email,
       (SELECT COUNT(*) FROM users WHERE company_id = c.id) AS total_employees
     FROM companies c
@@ -63,6 +64,7 @@ export const companies = async (companyId, selectedColumns) => {
           id: company.manager_id,
           first_name: company.manager_first_name,
           last_name: company.manager_last_name,
+          phone: company.manager_phone_number,
           email: company.manager_email
         } : null,
         accountants: accountants
@@ -77,13 +79,15 @@ export const companies = async (companyId, selectedColumns) => {
 
     const rows = companiesWithAccountants.map(company => ({
       id: company.id,
-      name: company.name,
+      name_company: company.name,
       tax_identification_number: company.tax_identification_number,
       zip_code: company.zip_code,
       city: company.city,
       address: company.address,
       total_employees: company.total_employees,
       manager_child_company:`${company.manager.first_name} ${company.manager.last_name}`,
+      phone: company.manager.phone,
+      email: company.manager.email,
       accountants: company.accountants.map(acc => `${acc.first_name} ${acc.last_name}`).join(", "),
       created_at:  company.created_at
     }));

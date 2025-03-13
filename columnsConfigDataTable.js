@@ -7,5 +7,10 @@ export const columnsConfigDataTable = (columns, selectedColumns) => {
     textAlign: column.textAlign
   }));
 
-  return selectedColumns.map(col => columnsData.find(c => c.field === col));
+  const columnsWithBooleans = columnsData.map(column => ({
+    ...column,
+    visible: column.visible === 1
+  })); 
+
+  return selectedColumns.map(col => columnsWithBooleans.find(c => c.field === col));
 };

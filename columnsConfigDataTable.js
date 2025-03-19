@@ -4,7 +4,8 @@ export const columnsConfigDataTable = (columns, selectedColumns) => {
     name: column.name,
     size: column.size,
     visible: column.visible,
-    textAlign: column.textAlign
+    textAlign: column.textAlign,
+    type: column.type
   }));
 
   const columnsWithBooleans = columnsData.map(column => ({

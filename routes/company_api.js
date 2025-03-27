@@ -1,6 +1,8 @@
 import express from "express";
-import { add_company, companies, company_accountants } from "../query/company_query.js";
 import { authenticateToken } from "../authorization/authenticateToken.js";
+import { companies } from "../query/company/companies.js";
+import { company_accountants } from "../query/company/company_accountants.js";
+import { add_company } from "../query/company/add_company.js";
 
 const router = express.Router();
 
@@ -24,6 +26,13 @@ router.post("/add_company", authenticateToken, async (req, res) => {
   const query = await add_company(first_name, last_name, email, phone, name_company, tin, zip_code, city, address, parent_company_id);
 
   res.send(query);
+});
+
+router.delete("/delete_company/:id", authenticateToken, async (req, res) => {
+  const companyId = req.params.id;
+  console.log(companyId);
+
+  res.send(companyId);
 });
 
 export const companyRoutes = router;

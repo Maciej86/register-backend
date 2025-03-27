@@ -1,8 +1,10 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { create_user_business, create_user_personal, verify_account } from "../query/create_user_query.js";
 import { emailVerifyAccount } from "../email/VerifyAccount.js";
+import { create_user_personal } from "../query/create_user/create_user_personal.js";
+import { create_user_business } from "../query/create_user/create_user_business.js";
+import { verify_account } from "../query/create_user/verify_account.js";
 
 const router = express.Router();
 

@@ -60,8 +60,8 @@ export const user_refresh = async (req) => {
         [user.company_id]
       );
       
-      filteredUser.plan.created_companies_count = createdCompanies[0]?.company_count || 0;
-      filteredUser.plan.created_companies_users_count = userCount[0]?.users_count || 0;
+      filteredUser.plan.companies_count = createdCompanies[0]?.company_count || 0;
+      filteredUser.plan.companies_users_count = userCount[0]?.users_count || 0;
     }
 
     return {

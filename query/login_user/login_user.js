@@ -95,8 +95,8 @@ export const login_user = async (req, res) => {
         [user.company_id]
       );
 
-      filteredUser.plan.created_companies_count = createdCompanies[0]?.company_count || 0;
-      filteredUser.plan.created_companies_users_count = userCount[0]?.users_count || 0;
+      filteredUser.plan.companies_count = createdCompanies[0]?.company_count || 0;
+      filteredUser.plan.companies_users_count = userCount[0]?.users_count || 0;
     }
 
     res.cookie("auth_token", token, {

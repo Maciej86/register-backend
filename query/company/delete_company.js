@@ -58,7 +58,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       };
     }
 
-    await connection.query("DELETE FROM users WHERE company_id = ?", [company_id]);
+    const [deleteUser] = await connection.query("DELETE FROM users WHERE company_id = ?", [company_id]);
     const [result] = await connection.query("DELETE FROM companies WHERE id = ?", [company_id]);
 
     if (result.affectedRows === 0) {
@@ -77,7 +77,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
     return {
       message: "server.company_deleted_successfully",
       error: false,
-      data: {id: company_id},
+      data: {id: company_id, deleteUserCount: deleteUser.affectedRows},
     };
   } catch (error) {
     await connection.rollback();

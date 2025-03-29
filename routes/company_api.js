@@ -23,8 +23,10 @@ router.get("/company_accountants", authenticateToken, async (req, res) => {
 });
 
 router.post("/add_company", authenticateToken, async (req, res) => {
-  const { first_name, last_name, email, phone, name_company, tin, zip_code, city, address, parent_company_id } = req.body;
-  const query = await add_company(first_name, last_name, email, phone, name_company, tin, zip_code, city, address, parent_company_id);
+  const { first_name, last_name, email, phone, name_company, tin, zip_code, city, address } = req.body;
+  const userCompanyId = req.user.companyId;
+  const userRole = req.user.role;
+  const query = await add_company(first_name, last_name, email, phone, name_company, tin, zip_code, city, address, userCompanyId, userRole);
 
   res.send(query);
 });

@@ -1,10 +1,21 @@
 import { pool } from "../../db.js";
 
-export const add_company = async (first_name, last_name, email, phone, name_company, tin, zip_code, city, address, parent_company_id) => {
+export const add_company = async (first_name, last_name, email, phone, name_company, tin, zip_code, city, address, user_company_id, user_role, ) => {
   const connection = await pool.getConnection();
 
   try {
     await connection.beginTransaction();
+
+    const allowedRoles = ['main_administrator', 'administrator'];
+    if (!allowedRoles.includes(user_role)) {
+      await connection.rollback();
+      connection.release();
+      return {
+        message: "server.no_permissions",
+        error: true,
+        data: null
+      };
+    }
 
     const [emailRow] = await connection.query(
       "SELECT email FROM users WHERE email = ?",
@@ -32,7 +43,7 @@ export const add_company = async (first_name, last_name, email, phone, name_comp
       LEFT JOIN companies c ON c.parent_company_id = p.id
       WHERE p.id = ?
       GROUP BY p.id, p.name, pl.name, pl.max_companies;`,
-      [parent_company_id]
+      [user_company_id]
     );
 
     if (rows.length === 0) {
@@ -57,7 +68,7 @@ export const add_company = async (first_name, last_name, email, phone, name_comp
 
     const [resultCompany] = await connection.query(
       `INSERT INTO companies (name, tax_identification_number, zip_code, city, address, parent_company_id, subscription_plan, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, "Basic", NOW(), NOW())`,
-      [name_company, tin, zip_code, city, address, parent_company_id]);
+      [name_company, tin, zip_code, city, address, user_company_id]);
 
     const idCompany = resultCompany.insertId;
 

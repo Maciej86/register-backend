@@ -1,5 +1,5 @@
 import { pool } from "../../db.js";
-// import { checkUserRole } from "../../authorization/checkUserRole.js";
+import { checkUserRole } from "../../authorization/checkUserRole.js";
 
 export const delete_company = async (company_id, user_company_id, user_role) => {
   const connection = await pool.getConnection();

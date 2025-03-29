@@ -28,7 +28,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       await connection.rollback();
       connection.release();
       return {
-        message: "server.main_company_cannot_be_deleted",
+        message: "server.list_contractors.main_company_cannot_be_deleted",
         error: true,
         data: null,
       };
@@ -40,7 +40,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       await connection.rollback();
       connection.release();
       return {
-        message: "server.no_permission_to_delete_subcompany",
+        message: "server.no_permissions",
         error: true,
         data: null,
       };
@@ -52,7 +52,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       await connection.rollback();
       connection.release();
       return {
-        message: "server.user_not_authorized_to_delete_this_subcompany",
+        message: "server.no_permissions",
         error: true,
         data: null,
       };
@@ -75,7 +75,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
     connection.release();
 
     return {
-      message: "server.company_deleted_successfully",
+      message: "server.list_contractors.company_deleted_successfully",
       error: false,
       data: {id: company_id, deleteUserCount: deleteUser.affectedRows},
     };
@@ -84,7 +84,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
     connection.release();
 
     return {
-      message: "server.delete_company_error",
+      message: "server.delete_error",
       error: true,
       data: error,
     };

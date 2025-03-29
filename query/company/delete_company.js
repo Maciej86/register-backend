@@ -1,4 +1,5 @@
 import { pool } from "../../db.js";
+// import { checkUserRole } from "../../authorization/checkUserRole.js";
 
 export const delete_company = async (company_id, user_company_id, user_role) => {
   const connection = await pool.getConnection();
@@ -34,17 +35,10 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       };
     }
 
-    // Checking if the user has the appropriate role
-    const allowedRoles = ['main_administrator', 'administrator'];
-    if (!allowedRoles.includes(user_role)) {
-      await connection.rollback();
-      connection.release();
-      return {
-        message: "server.no_permissions",
-        error: true,
-        data: null,
-      };
-    }
+    const roleCheck = await checkUserRole(user_role, ["main_administrator", "administrator"], connection);
+    if (roleCheck) {
+      return roleCheck
+    };
     
     // If the user is 'main_administrator' or 'administrator',
     // we check if the company they want to delete belongs to their company

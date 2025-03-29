@@ -1,4 +1,5 @@
 import { pool } from "../../db.js";
+import { checkUserRole } from "../../authorization/checkUserRole.js";
 
 export const add_company = async (first_name, last_name, email, phone, name_company, tin, zip_code, city, address, user_company_id, user_role, ) => {
   const connection = await pool.getConnection();
@@ -6,16 +7,10 @@ export const add_company = async (first_name, last_name, email, phone, name_comp
   try {
     await connection.beginTransaction();
 
-    const allowedRoles = ['main_administrator', 'administrator'];
-    if (!allowedRoles.includes(user_role)) {
-      await connection.rollback();
-      connection.release();
-      return {
-        message: "server.no_permissions",
-        error: true,
-        data: null
-      };
-    }
+    const roleCheck = await checkUserRole(user_role, ["main_administrator", "administrator"], connection);
+    if (roleCheck) {
+      return roleCheck
+    };
 
     const [emailRow] = await connection.query(
       "SELECT email FROM users WHERE email = ?",

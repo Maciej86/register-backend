@@ -22,8 +22,8 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
 
     const { parent_company_id } = company[0];
 
-    // Sprawdzamy, czy firma jest podrzędna
-    // Firma główna nie może być usunięta przez to API
+    // Checking if the company is a subsidiary
+    // The main company cannot be deleted through this API
     if (!parent_company_id) {
       await connection.rollback();
       connection.release();
@@ -34,7 +34,7 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       };
     }
 
-    // Sprawdzamy, czy użytkownik ma odpowiednią rolę
+    // Checking if the user has the appropriate role
     const allowedRoles = ['main_administrator', 'administrator'];
     if (!allowedRoles.includes(user_role)) {
       await connection.rollback();
@@ -46,8 +46,8 @@ export const delete_company = async (company_id, user_company_id, user_role) => 
       };
     }
     
-    // Jeżeli użytkownik jest 'main_administrator' lub 'administrator',
-    // sprawdzamy, czy firma, którą chce usunąć, należy do jego firmy
+    // If the user is 'main_administrator' or 'administrator',
+    // we check if the company they want to delete belongs to their company
     if (user_company_id !== parent_company_id) {
       await connection.rollback();
       connection.release();

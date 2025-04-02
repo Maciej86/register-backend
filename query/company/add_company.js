@@ -68,7 +68,7 @@ export const add_company = async (first_name, last_name, email, phone, name_comp
     const idCompany = resultCompany.insertId;
 
     const [resultUser] = await connection.query(
-      `INSERT INTO users (company_id, first_name, last_name, email, password, theme, phone_number, address_street, address_city, address_postal_code, user_role, bookkeeping, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, NULL, "defaultTheme", ?, NULL, NULL, NULL, "parent_administrator", false, NULL, true, NULL, NULL, NULL, NULL, NULL, false, NULL, NOW(), NOW())`,
+      `INSERT INTO users (company_id, first_name, last_name, email, password, theme, phone_number, address_street, address_city, address_postal_code, user_role, bookkeeping, employment_date, user_status, contract_type, vacation_days, medical_exam_date, hourly_rate, monthly_rate, is_verified, verification_token, created_at, updated_at) VALUES (?, ?, ?, ?, NULL, "defaultTheme", ?, NULL, NULL, NULL, "admin_child_company", false, NULL, true, NULL, NULL, NULL, NULL, NULL, false, NULL, NOW(), NOW())`,
       [idCompany, first_name, last_name, email, phone]);
 
     await connection.commit();

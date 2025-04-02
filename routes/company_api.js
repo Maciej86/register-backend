@@ -8,7 +8,7 @@ import { delete_company } from "../query/company/delete_company.js";
 const router = express.Router();
 
 router.get("/companies", authenticateToken, async (req, res) => {
-  const selectedColumns = ["id", "name_company", "tax_identification_number", "zip_code", "city", "address", "total_employees", "parent_administrator_child_company", "phone", "email", "accountants", "created_at"];
+  const selectedColumns = ["id", "name_company", "tax_identification_number", "zip_code", "city", "address", "total_employees", "admin_child_company", "phone", "email", "accountants", "created_at"];
   const companyId = req.user.companyId;
   const query = await companies(companyId, selectedColumns) 
 
@@ -20,14 +20,6 @@ router.get("/company_accountants", authenticateToken, async (req, res) => {
   const query = await company_accountants(companyId) 
 
   res.send(query);
-});
-
-router.get("/get_company/:id", authenticateToken, async (req, res) => {
-  const { id } = req.query;
-  const companyId = req.user.companyId;
-  const userRole = req.user.role;
-
-  res.send(id, companyId, userRole);
 });
 
 router.post("/add_company", authenticateToken, async (req, res) => {

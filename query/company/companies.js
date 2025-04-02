@@ -6,14 +6,14 @@ export const companies = async (companyId, selectedColumns) => {
     SELECT 
       c.id, c.name, c.tax_identification_number, c.zip_code, 
       c.city, c.address, c.parent_company_id, c.created_at, c.updated_at,
-      u.id AS manager_id,
-      u.first_name AS manager_first_name,
-      u.last_name AS manager_last_name,
-      u.phone_number AS manager_phone_number,
-      u.email AS manager_email,
+      u.id AS parent_administrator_id,
+      u.first_name AS parent_administrator_first_name,
+      u.last_name AS parent_administrator_last_name,
+      u.phone_number AS parent_administrator_phone_number,
+      u.email AS parent_administrator_email,
       (SELECT COUNT(*) FROM users WHERE company_id = c.id) AS total_employees
     FROM companies c
-    LEFT JOIN users u ON c.id = u.company_id AND u.user_role = 'manager'
+    LEFT JOIN users u ON c.id = u.company_id AND u.user_role = 'parent_administrator'
     WHERE c.parent_company_id = ? ORDER BY c.created_at DESC;
   `;
 
@@ -60,12 +60,12 @@ export const companies = async (companyId, selectedColumns) => {
         created_at: company.created_at,
         updated_at: company.updated_at,
         total_employees: company.total_employees,
-        manager: company.manager_id ? {
-          id: company.manager_id,
-          first_name: company.manager_first_name,
-          last_name: company.manager_last_name,
-          phone: company.manager_phone_number,
-          email: company.manager_email
+        parent_administrator: company.parent_administrator_id ? {
+          id: company.parent_administrator_id,
+          first_name: company.parent_administrator_first_name,
+          last_name: company.parent_administrator_last_name,
+          phone: company.parent_administrator_phone_number,
+          email: company.parent_administrator_email
         } : null,
         accountants: accountants
           .filter(acc => acc.company_id === company.id)
@@ -85,9 +85,9 @@ export const companies = async (companyId, selectedColumns) => {
       city: company.city,
       address: company.address,
       total_employees: company.total_employees,
-      manager_child_company:`${company.manager.first_name} ${company.manager.last_name}`,
-      phone: company.manager.phone,
-      email: company.manager.email,
+      parent_administrator_child_company:`${company.parent_administrator.first_name} ${company.parent_administrator.last_name}`,
+      phone: company.parent_administrator.phone,
+      email: company.parent_administrator.email,
       accountants: company.accountants.map(acc => `${acc.first_name} ${acc.last_name}`).join(", "),
       created_at:  company.created_at
     }));

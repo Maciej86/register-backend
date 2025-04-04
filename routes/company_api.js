@@ -4,6 +4,7 @@ import { companies } from "../query/company/companies.js";
 import { company_accountants } from "../query/company/company_accountants.js";
 import { add_company } from "../query/company/add_company.js";
 import { delete_company } from "../query/company/delete_company.js";
+import { get_company } from "../query/company/get_company.js";
 
 const router = express.Router();
 
@@ -18,6 +19,15 @@ router.get("/companies", authenticateToken, async (req, res) => {
 router.get("/company_accountants", authenticateToken, async (req, res) => {
   const companyId = req.user.companyId;
   const query = await company_accountants(companyId) 
+
+  res.send(query);
+});
+
+router.get("/get_company/:id", authenticateToken, async (req, res) => {
+  const id = Number(req.params.id);
+  const companyId = req.user.companyId;
+  const userRole = req.user.role;
+  const query = await get_company(id, companyId, userRole);
 
   res.send(query);
 });
